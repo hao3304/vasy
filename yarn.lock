@@ -6565,6 +6565,10 @@ vuex@^3.0.1:
   version "3.0.1"
   resolved "https://registry.yarnpkg.com/vuex/-/vuex-3.0.1.tgz#e761352ebe0af537d4bb755a9b9dc4be3df7efd2"
 
+vx-easyui@^1.0.16:
+  version "1.0.16"
+  resolved "https://registry.yarnpkg.com/vx-easyui/-/vx-easyui-1.0.16.tgz#c38aeec2ae97799bf79a3f82aa2899bc7875c483"
+
 watchpack@^1.5.0:
   version "1.6.0"
   resolved "https://registry.yarnpkg.com/watchpack/-/watchpack-1.6.0.tgz#4bc12c2ebe8aa277a71f1d3f14d685c7b446cd00"
