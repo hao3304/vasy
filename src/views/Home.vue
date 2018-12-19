@@ -1,145 +1,174 @@
 <template>
-  <div>
-    <h2>Split Panel</h2>
-    <Layout style="width:700px;height:250px;">
-      <LayoutPanel region="west" :bodyStyle="{padding:'5px'}" style="width:150px;">
-        <Tree :data="menuData"></Tree>
-      </LayoutPanel>
-      <Tabs style="height:100%">
-        <TabPanel title="Tab1" bodyCls="f-column" :border="false">
-          <DataGrid :data="gridData" class="f-full" :border="false">
-            <GridColumn field="itemid" title="Item ID"></GridColumn>
-            <GridColumn field="name" title="Name"></GridColumn>
-            <GridColumn field="listprice" title="List Price" align="right"></GridColumn>
-            <GridColumn field="unitcost" title="Unit Cost" align="right"></GridColumn>
-            <GridColumn field="attr" title="Attribute" width="30%"></GridColumn>
-            <GridColumn field="status" title="Status" align="center"></GridColumn>
-          </DataGrid>
-        </TabPanel>
-        <TabPanel title="Tab2"></TabPanel>
-        <TabPanel title="Tab3"></TabPanel>
-      </Tabs>
-    </Layout>
+  <div class="page-home">
+    <div class="f-panel">
+      <div class="f-panel__header">
+        <f-filter :list="filter" @on-filter="init" >
+          <Button slot="buttons" type="primary" style="margin-left: 40px" icon="md-add" @click="dialog = true">新增</Button>
+        </f-filter>
+      </div>
+      <div class="f-panel__body" ref="panel_body">
+        <Table class="f-table" :columns="columns1" :height="height" :data="data1" size="small" border></Table>
+      </div>
+      <div class="f-panel__footer">
+        <Pagination :total="total" displayMsg="显示 {from} 到 {to}，共 {total} 记录" :pageSize="20" :pageNumber="1" :layout="layout1" @pageChange="onPageChange($event)">
+          <template slot-scope="scope">
+            <div style="margin: 0 5px;">第 <input type="number" value="1" style="width: 40px;text-align: center" /> 页，共 1 页 </div>
+          </template>
+        </Pagination>
+      </div>
+    </div>
+
+    <Modal title="xxxx" v-model="dialog"></Modal>
   </div>
 </template>
 
 <script>
-  export default {
-    data() {
-      return {
-        menuData: [
-          {
-            text: "Item1",
-            children: [
-              { text: "Item11" },
-              {
-                text: "Item12",
-                state: "closed",
-                children: [
-                  { text: "Iteme121" },
-                  { text: "Iteme122" },
-                  { text: "Iteme123" }
-                ]
-              },
-              { text: "Item13" },
-              { text: "Item14" }
-            ]
-          },
-          { text: "Item2" }
-        ],
-        gridData: [
-          {
-            code: "FI-SW-01",
-            name: "Koi",
-            unitcost: 10.0,
-            status: "P",
-            listprice: 36.5,
-            attr: "Large",
-            itemid: "EST-1"
-          },
-          {
-            code: "K9-DL-01",
-            name: "Dalmation",
-            unitcost: 12.0,
-            status: "P",
-            listprice: 18.5,
-            attr: "Spotted Adult Female",
-            itemid: "EST-10"
-          },
-          {
-            code: "RP-SN-01",
-            name: "Rattlesnake",
-            unitcost: 12.0,
-            status: "P",
-            listprice: 38.5,
-            attr: "Venomless",
-            itemid: "EST-11"
-          },
-          {
-            code: "RP-SN-01",
-            name: "Rattlesnake",
-            unitcost: 12.0,
-            status: "P",
-            listprice: 26.5,
-            attr: "Rattleless",
-            itemid: "EST-12"
-          },
-          {
-            code: "RP-LI-02",
-            name: "Iguana",
-            unitcost: 12.0,
-            status: "P",
-            listprice: 35.5,
-            attr: "Green Adult",
-            itemid: "EST-13"
-          },
-          {
-            code: "FL-DSH-01",
-            name: "Manx",
-            unitcost: 12.0,
-            status: "P",
-            listprice: 158.5,
-            attr: "Tailless",
-            itemid: "EST-14"
-          },
-          {
-            code: "FL-DSH-01",
-            name: "Manx",
-            unitcost: 12.0,
-            status: "P",
-            listprice: 83.5,
-            attr: "With tail",
-            itemid: "EST-15"
-          },
-          {
-            code: "FL-DLH-02",
-            name: "Persian",
-            unitcost: 12.0,
-            status: "P",
-            listprice: 23.5,
-            attr: "Adult Female",
-            itemid: "EST-16"
-          },
-          {
-            code: "FL-DLH-02",
-            name: "Persian",
-            unitcost: 12.0,
-            status: "P",
-            listprice: 89.5,
-            attr: "Adult Male",
-            itemid: "EST-17"
-          },
-          {
-            code: "AV-CB-01",
-            name: "Amazon Parrot",
-            unitcost: 92.0,
-            status: "P",
-            listprice: 63.5,
-            attr: "Adult Male",
-            itemid: "EST-18"
-          }
-        ]
-      };
+import { mapState } from "vuex";
+export default {
+  data() {
+    return {
+      layout1: [
+        "list",
+        "sep",
+        "first",
+        "prev",
+        "sep",
+        "tpl",
+        "sep",
+        "next",
+        "last",
+        "sep",
+        "refresh",
+        "info"
+      ],
+      total: 10,
+      columns1: [
+        { type: "index", width: 30, align: "center" },
+        {
+          title: "Name",
+          key: "name"
+        },
+        {
+          title: "Age",
+          key: "age"
+        },
+        {
+          title: "Address",
+          key: "address"
+        },
+        {
+          title: "操作",
+          key: "address"
+        }
+      ],
+      data1: [
+        {
+          name: "John Brown",
+          age: 18,
+          address: "New York No. 1 Lake Park",
+          date: "2016-10-03"
+        },
+        {
+          name: "Jim Green",
+          age: 24,
+          address: "London No. 1 Lake Park",
+          date: "2016-10-01"
+        },
+        {
+          name: "Joe Black",
+          age: 30,
+          address: "Sydney No. 1 Lake Park",
+          date: "2016-10-02"
+        },
+        {
+          name: "Jon Snow",
+          age: 26,
+          address: "Ottawa No. 2 Lake Park",
+          date: "2016-10-04"
+        }
+      ],
+      height: 0,
+      filter: [
+        {
+          type: "input",
+          name: "用户名",
+          field: "name",
+          placeholder: `请输入用户名模糊查询`
+        }
+      ],
+      dialog: false
+    };
+  },
+  computed: {
+    ...mapState(["windowHeight"])
+  },
+  methods: {
+    init() {
+      this.$nextTick(() => {
+        this.height = this.$refs.panel_body.clientHeight;
+      });
     }
-  };
+  },
+  mounted() {
+    this.init();
+    window.onresize = () => {
+      this.init();
+    };
+  }
+};
 </script>
+<style lang="less">
+.page-home {
+  height: 100%;
+  overflow: hidden;
+  background-color: #fafafa;
+
+  .toolbar {
+    line-height: 37px;
+    border-bottom: 1px solid #ddd;
+  }
+}
+
+.f-panel {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+
+  &__header {
+    padding: 5px;
+    border-bottom: 1px solid #ccc;
+  }
+  &__body {
+    flex: 1;
+    overflow: hidden;
+  }
+  &__footer {
+  }
+}
+.f-table {
+  border-left: none !important;
+  border-right: none !important;
+  border-top: none !important;
+  .ivu-table {
+    color: #000;
+    font-size: 14px;
+    th {
+      background-color: #f9f9f9;
+      font-weight: normal;
+    }
+
+    .ivu-table-cell {
+      padding: 0 4px;
+    }
+  }
+  .ivu-table-border td,
+  .ivu-table-border th {
+    border-width: 0 1px 1px 0;
+    border-style: dotted;
+    border-color: #ccc;
+  }
+  .ivu-table-small td {
+    height: 32px;
+  }
+}
+</style>

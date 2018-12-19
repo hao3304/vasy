@@ -4,7 +4,7 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    token: "123",
+    token: "",
     windowHeight: document.documentElement.clientHeight,
     windowWidth: document.documentElement.clientWidth
   },

@@ -84,6 +84,10 @@ export default {
 
   @import "https://netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css";
 
+  .sidemenu li {
+    cursor: pointer;
+  }
+
   .sidemenu .accordion .panel-title {
     color: #b8c7ce;
   }

@@ -16,5 +16,6 @@ export default {
 .f-header {
   height: 50px;
   background-color: @HeaderBg;
+  background-image: linear-gradient(143deg, #2945cb 20%, #0072ca 81%, #3a9dff);
 }
 </style>
