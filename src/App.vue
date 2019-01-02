@@ -41,7 +41,8 @@ export default {
       this.set_window_height(window.document.documentElement.clientHeight);
       this.set_window_width(window.document.documentElement.clientWidth);
     };
-  }
+  },
+  created() {}
 };
 </script>
 

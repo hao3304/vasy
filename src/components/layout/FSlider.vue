@@ -1,73 +1,21 @@
 <template>
     <div class="f-slider">
-        <SideMenu :data="menus" :border="false" :collapsed="collapsed" ></SideMenu>
+        <SideMenu :data="sliderMenu" :border="false" :collapsed="collapsed" ></SideMenu>
     </div>
 </template>
 
 <script>
+import { mapState } from "vuex";
 export default {
   name: "FSlider",
   data() {
     return {
       collapsed: false,
-      menus: [
-        {
-          text: "Forms",
-          iconCls: "fa fa-wpforms",
-          state: "open",
-          children: [
-            {
-              text: "Form Element"
-            },
-            {
-              text: "Wizard"
-            },
-            {
-              text: "File Upload"
-            }
-          ]
-        },
-        {
-          text: "Mail",
-          iconCls: "fa fa-at",
-          selected: true,
-          children: [
-            {
-              text: "Inbox"
-            },
-            {
-              text: "Sent"
-            },
-            {
-              text: "Trash",
-              children: [
-                {
-                  text: "Item1"
-                },
-                {
-                  text: "Item2"
-                }
-              ]
-            }
-          ]
-        },
-        {
-          text: "Layout",
-          iconCls: "fa fa-table",
-          children: [
-            {
-              text: "Panel"
-            },
-            {
-              text: "Accordion"
-            },
-            {
-              text: "Tabs"
-            }
-          ]
-        }
-      ]
+      menus: []
     };
+  },
+  computed: {
+    ...mapState("app", ["sliderMenu"])
   }
 };
 </script>
@@ -84,8 +32,18 @@ export default {
 
   @import "https://netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css";
 
+  .sidemenu {
+    .panel-with-icon {
+      padding-left: 20px;
+    }
+  }
+
   .sidemenu li {
     cursor: pointer;
+  }
+  .sidemenu .panel-icon {
+    margin-top: -12px;
+    height: 20px;
   }
 
   .sidemenu .accordion .panel-title {

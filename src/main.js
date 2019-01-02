@@ -3,6 +3,7 @@ import App from "./App.vue";
 import Views from "./views/Index";
 import router from "./router";
 import store from "./store";
+import Cookies from "js-cookie";
 import "vx-easyui/dist/themes/gray/easyui.css";
 import "vx-easyui/dist/themes/icon.css";
 import "vx-easyui/dist/themes/vue.css";
@@ -25,6 +26,12 @@ export default new Vue({
       return h(Views);
     } else {
       return h(App);
+    }
+  },
+  created() {
+    const token = Cookies.get("token");
+    if (token) {
+      store.commit("set_token", token);
     }
   }
 }).$mount("#app");

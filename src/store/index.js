@@ -2,6 +2,8 @@ import Vue from "vue";
 import Vuex from "vuex";
 Vue.use(Vuex);
 
+import app from "./app";
+
 export default new Vuex.Store({
   state: {
     token: "",
@@ -22,5 +24,7 @@ export default new Vuex.Store({
       state.windowWidth = payload;
     }
   },
-  modules: {}
+  modules: {
+    app
+  }
 });

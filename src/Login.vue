@@ -11,7 +11,6 @@
             </div>
         </div>
         <div class="login-form">
-
             <div class="login-form__left">
                 <div class="left-logo">
                     <img src="~@/assets/images/logo.png" alt="">
@@ -43,8 +42,8 @@
                 <div>
                     <Button @click="onSubmit" :loading="loading" size="large" type="info" style="width: 100%">登 录</Button>
                 </div>
+                <p v-show="error" style="text-align: center;margin-top: 5px;color: #ed4014">{{error}}</p>
             </div>
-
         </div>
 
     </div>
@@ -65,35 +64,35 @@ export default {
       mode: "0",
       loading: false,
       videoCanPlay: false,
-      fixStyle: ""
+      fixStyle: "",
+      error: ""
     };
   },
   methods: {
     ...mapMutations(["set_token"]),
     onSubmit() {
       this.loading = true;
+      this.error = "";
       loginService
         .login(this.form)
         .then(rep => {
+          if (rep) {
+            this.set_token("token");
+            axios.defaults.headers["X-AUTH-TOKEN"] = rep.token;
+            Cookies.set("token", rep.token, { expires: 1 });
+            this.$store.dispatch("common/init");
+            this.$router.replace({ name: "hn-monitor" });
+            this.$nextTick(() => {
+              this.$store.commit("app/init", this.$route);
+            });
+          } else {
+            this.error = "用户名或者密码错误";
+          }
           this.loading = false;
-          this.set_token("token");
-          axios.defaults.headers["X-AUTH-TOKEN"] = rep.token;
-          Cookies.set("token", rep.token, { expires: 1 });
-          this.$store.dispatch("common/init");
-          this.$router.replace({ name: "hn-monitor" });
-          this.$nextTick(() => {
-            this.$store.commit("app/init", this.$route);
-          });
         })
-        .catch(e => {
+        .catch(() => {
           this.loading = false;
         });
-      // setTimeout(() => {
-      //   this.loading = falsit e;
-      //   this.set_token("token");
-      //   this.$ls.set("token", "token");
-      //   this.$router.replace({ name: "main" });
-      // }, 1000);
     },
     canplay() {
       this.videoCanPlay = true;
