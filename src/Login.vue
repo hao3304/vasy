@@ -32,7 +32,7 @@
                     </i-input>
                 </div>
                 <div>
-                    <i-input type="password" v-model="form.password" size="large" placeholder="请输入密码" >
+                    <i-input @on-enter="onSubmit" type="password" v-model="form.password" size="large" placeholder="请输入密码" >
                         <Icon type="md-key" slot="prefix" />
                         <a @click="form.password = ''" v-show="form.password.length > 0" href="javascript:;" slot="suffix">
                             <Icon type="ios-close"  />
@@ -83,7 +83,7 @@ export default {
             this.$store.dispatch("common/init");
             this.$router.replace({ name: "hn-monitor" });
             this.$nextTick(() => {
-              this.$store.commit("app/init", this.$route);
+              this.$store.commit("app/init");
             });
           } else {
             this.error = "用户名或者密码错误";

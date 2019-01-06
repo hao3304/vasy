@@ -34,15 +34,11 @@ export default {
     ...mapState(["token"])
   },
   methods: {
-    ...mapMutations(["set_window_height", "set_window_width"])
+    ...mapMutations("app", ["init"])
   },
   mounted() {
-    window.onresize = () => {
-      this.set_window_height(window.document.documentElement.clientHeight);
-      this.set_window_width(window.document.documentElement.clientWidth);
-    };
-  },
-  created() {}
+    this.init();
+  }
 };
 </script>
 

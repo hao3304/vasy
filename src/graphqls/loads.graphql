@@ -1,0 +1,52 @@
+query loads {
+  units {
+    id
+    name
+    unit
+    precision
+  }
+
+  dicts {
+    id
+    name
+    values {
+      id
+      name
+      value
+    }
+  }
+
+  roles {
+    id
+    name
+  }
+
+  deps {
+    id
+    name
+    sname
+  }
+
+  areas {
+    id
+    name
+    parent
+    children {
+      id
+      name
+    }
+  }
+  ticket_types {
+    id
+    name
+  }
+  me {
+    id
+    name
+  }
+
+  models {
+    id
+    name
+  }
+}

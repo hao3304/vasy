@@ -13,14 +13,9 @@ export default {
             iconCls: "iconfont icon-wang",
             children: [
               {
-                id: "1-1",
-                text: "热网监控",
-                path: "hn-monitor"
-              },
-              {
                 id: "1-2",
                 text: "换热站",
-                path: "Diagram"
+                path: "About"
               },
               {
                 id: "1-4",
@@ -201,6 +196,7 @@ export default {
     sliderActive: {},
     sliderExpand: true,
     tabs: [],
+    tabIndex: 0,
     isActiveRouter: true
   },
   mutations: {
@@ -220,35 +216,23 @@ export default {
     set_slider_expand(state, payload) {
       state.sliderExpand = payload;
     },
-    add_tabs(state, payload) {
-      if (!state.tabs.find(t => t.text == payload.text)) {
+    add_tab(state, payload) {
+      const index = state.tabs.findIndex(t => t.text == payload.text);
+      if (index == -1) {
         state.tabs.push(payload);
+        state.tabIndex = state.tabs.length;
+      } else {
+        state.tabIndex = index + 1;
       }
     },
     remove_tab(state, payload) {
       state.tabs = state.tabs.filter(t => t.text != payload.text);
-      this.commit("app/init", state.tabs[state.tabs.length - 1]);
     },
-    init(state, payload) {
-      let module;
-      this.commit("app/add_tabs", payload);
-      state.module.forEach(mod => {
-        mod.children.forEach(child1 => {
-          if (child1.path == payload.text) {
-            module = mod;
-            state.sliderActive = child1;
-          }
-          if (child1.children && child1.children.length > 0) {
-            child1.children.forEach(child2 => {
-              if (child2.path == payload.text) {
-                module = mod;
-                state.sliderActive = child2;
-              }
-            });
-          }
-        });
-      });
-      this.commit("app/set_module", module.id);
+    set_tab_index(state, payload) {
+      state.tabIndex = payload;
+    },
+    init() {
+      this.commit("app/set_module", 1);
     }
   },
   actions: {

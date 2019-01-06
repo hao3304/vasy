@@ -4,13 +4,26 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <script src="https://webapi.amap.com/maps?v=1.4.10&key=cf8c020fb22562f1009dfe4d31202449&plugin=AMap.MarkerClusterer"></script>
+    <script src="//webapi.amap.com/ui/1.0/main.js?v=1.0.11"></script>
     <title>vasy</title>
+    <style>
+    .loading {
+      position: absolute;
+      top: 50%;
+      margin-top: -40px;
+      left: 50%;
+      margin-left: -244px;
+    }
+    </style>
   </head>
   <body>
     <noscript>
       <strong>We're sorry but vasy doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
     </noscript>
-    <div id="app"></div>
+    <div id="app">
+      <img class="loading" src="./loading.gif" alt="">
+    </div>
     <!-- built files will be auto injected -->
   </body>
 </html>

@@ -3,6 +3,8 @@ import Vuex from "vuex";
 Vue.use(Vuex);
 
 import app from "./app";
+import monitor from "./monitor";
+import common from "./common";
 
 export default new Vuex.Store({
   state: {
@@ -25,6 +27,8 @@ export default new Vuex.Store({
     }
   },
   modules: {
-    app
+    app,
+    monitor,
+    common
   }
 });

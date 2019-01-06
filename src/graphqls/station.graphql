@@ -1,0 +1,51 @@
+query GetStations(
+  $id: [String!]
+  $types: [String!]
+  $areas: [String!]
+  $units: [String!]
+  $where: Where
+  $name: String
+  $orders: [String!]!
+  $page: Int!
+  $limit: Int!
+  $count: Boolean!
+) {
+  stations(
+    input: {
+      id: $id
+      types: $types
+      areas: $areas
+      units: $units
+      where: $where
+      name: $name
+      orders: $orders
+      page: $page
+      limit: $limit
+      count: $count
+    }
+  ) {
+    size
+    total
+    data {
+      id
+      status
+      created
+      changed
+      weight
+      type
+      area
+      name
+      addr
+      position
+      tag
+      time
+      sensors {
+        id
+        name
+        time
+        unit
+        value
+      }
+    }
+  }
+}

@@ -1,37 +1,60 @@
 <template>
     <div class="f-tab">
-        <Tabs :style="{height: windowHeight - 79 + 'px'}">
-            <TabPanel v-for="tab in tabs" :key="tab.path" :title="tab.name" iconCls="fa fa-file-text-o">
+        <Tabs ref="tabs" @tabClose="onTabClose" @tabSelect="onTabSelect"  :scrollable="true"  :style="{height: windowHeight - 79 + 'px'}">
+            <TabPanel  title="首页" iconCls="fa fa-home">
+                <iframe :src="getPath('Monitor')" style="width: 100%;" :style="{height: windowHeight - 116 + 'px'}" frameborder="0"></iframe>
+            </TabPanel>
+            <TabPanel v-for="tab in tabs" :closable="true" :target="tab" :title="tab.text" iconCls="fa fa-file-text-o">
                 <iframe :src="getPath(tab.path)" style="width: 100%;" :style="{height: windowHeight - 116 + 'px'}" frameborder="0"></iframe>
             </TabPanel>
-            <!--<TabPanel :title="'Help'" :closable="true" iconCls="icon-help">-->
-                <!--<p>This is the help content.</p>-->
-            <!--</TabPanel>-->
         </Tabs>
     </div>
 </template>
 
 <script>
-import { mapState } from "vuex";
+import { mapState, mapMutations } from "vuex";
+import { routes } from "@/router";
 export default {
   name: "FTab",
   computed: {
-    ...mapState(["windowHeight"])
+    ...mapState(["windowHeight"]),
+    ...mapState("app", ["tabs", "tabIndex"])
   },
-  data() {
-    return {
-      tabs: [
-        {
-          name: "测试",
-          path: "/views/home"
-        }
-      ]
-    };
+  watch: {
+    tabIndex() {
+      this.$nextTick(() => {
+        this.$refs.tabs.select(this.tabIndex);
+      });
+    }
   },
   methods: {
+    ...mapMutations("app", ["remove_tab", "set_tab_index"]),
     getPath(path) {
-      return window.location.origin + "#" + path;
+      const route = routes.find(route => route.name == path);
+      return window.location.origin + "#" + route.path;
+    },
+    onTabClose(tab) {
+      this.remove_tab(tab.$attrs.target);
+      this.set_tab_index(this.tabs.length);
+    },
+    onTabSelect(panel) {
+      const index = this.$refs.tabs.getPanelIndex(panel);
+      this.set_tab_index(index);
+    },
+    onRefresh() {
+      const panel = this.$refs.tabs.getSelectedPanel();
+      const iframe = $(panel.$el).find("iframe");
+      const src = iframe.attr("src");
+      iframe.attr("src", "");
+      this.$nextTick(() => {
+        iframe.attr("src", src);
+      });
     }
+  },
+  mounted() {
+    eventBus.$on("refresh", () => {
+      this.onRefresh();
+    });
   }
 };
 </script>

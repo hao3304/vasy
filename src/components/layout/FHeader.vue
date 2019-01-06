@@ -19,8 +19,10 @@
             <Badge style="margin-right: 20px;" dot>
                 <Icon type="md-notifications-outline" class="f-header__icon" size="22" ></Icon>
             </Badge>
-            <Icon style="margin-right: 20px;" type="md-refresh" class="f-header__icon"   size="22" />
-            <Icon style="margin-right: 20px;" class="f-header__icon" type="ios-expand" size="22" ></Icon>
+            <Icon style="margin-right: 20px;" type="md-refresh" class="f-header__icon" @click="onRefresh"  size="22" />
+            <Icon style="margin-right: 20px;" class="f-header__icon" custom="iconfont icon-quanping" v-if="!fullScreen" size="22" @click="onFullScreen" ></Icon>
+            <Icon style="margin-right: 20px;" class="f-header__icon" custom="iconfont icon-009pingmusuoxiao" v-if="fullScreen"  size="22" @click="onExitFullScreen" ></Icon>
+            <Icon style="margin-right: 20px;" class="f-header__icon" custom="iconfont icon-tuichu" size="22" @click="onLogout" ></Icon>
         </div>
     </div>
 </template>
@@ -32,6 +34,11 @@ export default {
   name: "FHeader",
   computed: {
     ...mapState("app", ["module", "selectModule"])
+  },
+  data() {
+    return {
+      fullScreen: false
+    };
   },
   methods: {
     ...mapMutations("app", ["set_module"]),
@@ -70,6 +77,9 @@ export default {
         document.webkitExitFullscreen();
       }
       this.fullScreen = false;
+    },
+    onRefresh() {
+      eventBus.$emit("refresh");
     }
   }
 };
@@ -113,7 +123,6 @@ export default {
             color: #fff;
           }
         }
-
         a {
           height: 100%;
           display: flex;
@@ -123,8 +132,8 @@ export default {
           color: rgba(255, 255, 255, 0.8);
           text-decoration: none;
           i {
-            font-size: 24px;
-            height: 32px;
+            font-size: 22px;
+            height: 30px;
           }
           span {
             font-size: 12px;

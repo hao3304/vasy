@@ -1,0 +1,248 @@
+query GetTickets(
+  $type: String
+  $sn: String
+  $address: String
+  $remark: String
+  $pstime: String
+  $petime: String
+  $time: Int
+  $orders: [String!]!
+  $page: Int!
+  $limit: Int!
+  $count: Boolean!
+  $status: String
+) {
+  tickets(
+    input: {
+      time: $time
+      sn: $sn
+      type: $type
+      address: $address
+      remark: $remark
+      pstime: $pstime
+      petime: $petime
+      status: $status
+      orders: $orders
+      page: $page
+      limit: $limit
+      count: $count
+    }
+  ) {
+    size
+    total
+    data {
+      id
+      status
+      created
+      changed
+      type
+      state
+      sn
+      address
+      position
+      desc
+      remark
+      assignee
+      otype
+      oid
+      term
+      live
+      creator {
+        id
+        name
+      }
+
+      worker {
+        id
+        name
+      }
+
+      tstate {
+        id
+        name
+        roles {
+          id
+          name
+        }
+      }
+
+      actions {
+        id
+        name
+        fields {
+          id
+          action
+          name
+          desc
+          ftype
+          format
+          default
+          required
+          ofield
+        }
+      }
+    }
+  }
+}
+
+query TicketTypes {
+  ticket_types {
+    id
+    name
+    term
+  }
+}
+
+query TicketTypeById($id: String!) {
+  ticketType: ticket_types(id: $id) {
+    id
+    name
+    states {
+      id
+      status
+      type
+      name
+      uid
+      mode
+      weight
+      created
+      changed
+      user {
+        name
+      }
+
+      roles {
+        id
+        name
+      }
+    }
+  }
+}
+
+query GetTicket($id: String!) {
+  ticket(id: $id) {
+    id
+    tracks {
+      id
+      status
+      created
+      changed
+      uid
+      level
+      action
+      state
+      ticket
+      parent
+      remark
+      operator {
+        name
+      }
+      ticket_action {
+        id
+        name
+        fields {
+          id
+        }
+      }
+
+      track_fields {
+        id
+        value
+        field
+        track_field {
+          name
+        }
+      }
+    }
+  }
+}
+
+query TicketStat {
+  ticket_stat {
+    status {
+      working
+      pending
+      closed
+      auditing
+    }
+    types {
+      type
+      name
+      total
+    }
+  }
+}
+
+mutation TicketStateUpdate(
+  $id: String
+  $status: Int
+  $type: String
+  $name: String
+  $mode: Int
+  $uid: String
+  $weight: Int
+  $roles: [String!]
+) {
+  ticket_state_update(
+    input: {
+      id: $id
+      status: $status
+      type: $type
+      name: $name
+      mode: $mode
+      uid: $uid
+      weight: $weight
+      roles: $roles
+    }
+  ) {
+    id
+  }
+}
+
+mutation TicketCreate(
+  $otype: String!
+  $oid: String!
+  $type: String!
+  $desc: String
+  $remark: String
+  $term: Int
+  $address: String
+  $position: String
+  $live: Int
+) {
+  ticket_create(
+    input: {
+      otype: $otype
+      oid: $oid
+      type: $type
+      desc: $desc
+      remark: $remark
+      term: $term
+      address: $address
+      position: $position
+      live: $live
+    }
+  ) {
+    id
+  }
+}
+
+mutation TicketAction(
+  $ticket: String!
+  $action: String!
+  $assignee: String
+  $remark: String
+  $fields: [ITicketActionField!]
+) {
+  ticket_action(
+    input: {
+      ticket: $ticket
+      action: $action
+      assignee: $assignee
+      remark: $remark
+      fields: $fields
+    }
+  ) {
+    track
+  }
+}

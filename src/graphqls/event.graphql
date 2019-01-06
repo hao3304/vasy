@@ -1,0 +1,68 @@
+query GetEvents(
+  $category: String
+  $address: String
+  $remark: String
+  $pstime: String
+  $petime: String
+  $orders: [String!]!
+  $page: Int!
+  $limit: Int!
+  $count: Boolean!
+  $status: String
+) {
+  events(
+    input: {
+      category: $category
+      address: $address
+      remark: $remark
+      pstime: $pstime
+      petime: $petime
+      status: $status
+      orders: $orders
+      page: $page
+      limit: $limit
+      count: $count
+    }
+  ) {
+    size
+    total
+    data {
+      id
+      time
+      category
+      address
+      position
+      mobile
+      utype
+      usn
+      uname
+      rdep
+      remark
+      status
+      ticket {
+        id
+      }
+    }
+  }
+}
+
+query GetEventStat {
+  event_stat {
+    status {
+      pending
+      working
+      closed
+      auditing
+    }
+  }
+}
+
+subscription Hello {
+  hello
+}
+
+mutation UpdatePosition($id: String, $position: String) {
+  biz_event_position(id: $id, position: $position) {
+    id
+  }
+}

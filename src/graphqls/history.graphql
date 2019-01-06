@@ -1,0 +1,32 @@
+query GetHistory(
+  $stime: Int64
+  $etime: Int64
+  $types: [String!]
+  $stations: [String!]
+  $devices: [String!]
+  $sensors: [String!]
+  $area: String
+  $units: [String!]
+) {
+  history(
+    input: {
+      stime: $stime
+      etime: $etime
+      types: $types
+      stations: $stations
+      devices: $devices
+      sensors: $sensors
+      area: $area
+      units: $units
+    }
+  ) {
+    station
+    device
+    id
+    unit
+    values {
+      time
+      value
+    }
+  }
+}

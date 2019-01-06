@@ -1,11 +1,14 @@
 <template>
     <div class="f-slider">
-        <SideMenu :data="sliderMenu" :border="false" :collapsed="collapsed" ></SideMenu>
+        <div class="f-slider__collapse">
+            <i class="iconfont icon-menu"></i>
+        </div>
+        <SideMenu @itemClick="onSelect" :data="sliderMenu" :border="false" :collapsed="collapsed" ></SideMenu>
     </div>
 </template>
 
 <script>
-import { mapState } from "vuex";
+import { mapState, mapMutations } from "vuex";
 export default {
   name: "FSlider",
   data() {
@@ -16,6 +19,12 @@ export default {
   },
   computed: {
     ...mapState("app", ["sliderMenu"])
+  },
+  methods: {
+    ...mapMutations("app", ["add_tab"]),
+    onSelect(menu) {
+      this.add_tab(menu);
+    }
   }
 };
 </script>
@@ -30,16 +39,41 @@ export default {
   left: 0;
   background-color: #222d32;
 
+  &__collapse {
+    height: 33px;
+    line-height: 33px;
+    display: none;
+    text-align: center;
+    background-color: #333;
+    cursor: pointer;
+    i {
+      color: #bbb;
+    }
+    &:hover {
+      i {
+        color: #fff;
+      }
+    }
+  }
+
   @import "https://netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css";
 
   .sidemenu {
     .panel-with-icon {
       padding-left: 20px;
     }
+
+    .accordion-header-selected .panel-title,
+    .accordion-header-selected .panel-icon {
+      color: #fff !important;
+    }
   }
 
   .sidemenu li {
     cursor: pointer;
+    .tree-icon {
+      display: none;
+    }
   }
   .sidemenu .panel-icon {
     margin-top: -12px;
