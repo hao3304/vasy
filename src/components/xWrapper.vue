@@ -1,0 +1,523 @@
+<template>
+    <div class="wrapper" >
+        <div class="wrapper-content" >
+            <div class="wrapper-content__form">
+                <slot name="form">
+                    <x-filter ref="xFilter" :mode="mode" :list="filter" @on-filter="onFilter" >
+
+                        <Button type="primary" @click="onAdd"  style="margin-right: 10px;margin-left: 40px;" icon="md-add" slot="buttons">新增</Button>
+                        <Button type="error" @click="onDeleteSelected" :disabled="selection.length==0" style="margin-right: 10px" icon="md-remove" slot="buttons">批量删除</Button>
+                        <!--<Button  @click="onAdd"  style="margin-right: 10px"  slot="buttons">删除</Button>-->
+                        <slot name="buttons" slot="buttons"></slot>
+                        <Tooltip content="导出" placement="bottom" slot="right-block"  >
+                            <Button @click="onExport" icon="md-download" style="padding: 5px 8px;margin-right: 10px;"></Button>
+                        </Tooltip>
+                        <Tooltip content="列设置" placement="bottom" slot="right-block"   >
+                            <Button @click="onShowColumn" icon="md-settings" style="padding: 5px 8px;margin-right: 10px;"></Button>
+                        </Tooltip>
+                        <Tooltip content="刷新" placement="bottom" slot="right-block"   >
+                            <Button @click="onRefresh" icon="md-refresh" style="padding: 5px 8px;"></Button>
+                        </Tooltip>
+                    </x-filter>
+                </slot>
+            </div>
+        </div>
+        <div class="wrapper-body">
+            <slot name="content">
+                <Table size="small"
+                       ref="xTable"
+                       @on-row-dblclick="onEdit"
+                       @on-selection-change="onSelectChange"
+                       :highlight-row="true"
+                       @on-sort-change="onSortChange"
+                       @on-row-click="onRowClick"
+                       :height="height"
+                       class="x-table"
+                       :loading="loading"
+                       :columns="mColumns"
+                       :data="data"></Table>
+            </slot>
+            <div class="wrapper-page"  v-if="page">
+                <slot name="page">
+                    <Page @on-change="onPage"  :page-size="query.size" :page-size-opts="[20, 50, 100]" @on-page-size-change="onPageSizeChange" :total="total"  show-total show-elevator show-sizer></Page>
+                </slot>
+            </div>
+        </div>
+
+        <Modal
+                v-model="dialog"
+                :title="modalTitle"
+                :width="600"
+                :loading="formLoading"
+        >
+            <Form ref="form" :label-width="75" :rules="rules" :model="form">
+                <slot name="dialog" :model="form">
+                </slot>
+            </Form>
+            <div slot="footer">
+                <Button @click="onCancel">取消</Button>
+                <Button @click="onOk" type="primary">确定</Button>
+            </div>
+        </Modal>
+
+        <x-column :name="service" @on-select="onSelectColumns" :visible.sync="showColumn" :columns="columns"></x-column>
+    </div>
+</template>
+<script>
+import Service from "@/services";
+import xFilter from "./FFilter";
+import xColumn from "./xColumn";
+import { mapActions } from "vuex";
+import batchService from "@/services/batch";
+export default {
+  props: {
+    title: {
+      type: String,
+      default: "-"
+    },
+    columns: {
+      type: Array,
+      default: () => []
+    },
+    service: String,
+    model: {
+      type: Function,
+      default: () => {}
+    },
+    rules: Object,
+    filter: {
+      type: Array,
+      default: () => []
+    },
+    mode: String,
+    height: {
+      type: Number,
+      default: 400
+    },
+    page: {
+      type: Boolean,
+      default: true
+    },
+    loads: {
+      type: Boolean,
+      default: false
+    },
+    orders: {
+      type: Array,
+      default: () => []
+    }
+  },
+  components: {
+    xFilter,
+    xColumn
+  },
+  computed: {
+    mColumns() {
+      if (
+        this.localColumns.length > 0 &&
+        this.localColumns[0].key === "index"
+      ) {
+        let columns = this.localColumns;
+        columns[0]["render"] = (h, { index }) => {
+          return h("div", (this.query.page - 1) * this.query.size + index + 1);
+        };
+        return columns;
+      } else {
+        return this.localColumns;
+      }
+    },
+    modalTitle() {
+      if (this.action == "add") {
+        return "新增" + this.title;
+      } else {
+        return "编辑" + this.title;
+      }
+    }
+  },
+  data() {
+    return {
+      query: {
+        page: 1,
+        size: 20,
+        count: 1,
+        fields: ["*"],
+        orders: this.orders.length > 0 ? this.orders : ["weight", "-changed"],
+        filters: []
+      },
+      dialog: false,
+      formLoading: false,
+      data: [],
+      total: 0,
+      loading: false,
+      form: this.model(),
+      showColumn: false,
+      localColumns: [],
+      action: null,
+      updateId: null,
+      selection: []
+    };
+  },
+  methods: {
+    ...mapActions("common", ["init"]),
+    onAdd() {
+      this.$emit("on-add");
+      this.$refs.form.resetFields();
+      this.form = this.model();
+      this.dialog = true;
+      this.action = "add";
+    },
+    onOk() {
+      this.$emit("on-dialog-ok");
+      this.$refs.form.validate(valid => {
+        if (valid) {
+          if (this.action == "update") {
+            this.update();
+          } else {
+            this.save();
+          }
+        } else {
+          this.$Message.warning("请填写完整！");
+        }
+      });
+    },
+    save() {
+      this.formLoading = true;
+      Service[this.service]
+        .add(this.form)
+        .then(rep => {
+          console.log(rep);
+          this.dialog = false;
+          this.$Message.success("添加成功！");
+          this.render();
+          this.formLoading = false;
+          this.$emit("on-save", rep);
+          if (this.loads) {
+            this.init();
+          }
+        })
+        .catch(() => {
+          this.formLoading = false;
+        });
+    },
+    update() {
+      this.formLoading = true;
+      Service[this.service]
+        .update(this.updateId, this.form)
+        .then(rep => {
+          console.log(rep);
+          this.dialog = false;
+          this.$Message.success("编辑成功！");
+          this.render();
+          this.formLoading = false;
+          this.$emit("on-update", rep);
+          if (this.loads) {
+            this.init();
+          }
+        })
+        .catch(() => {
+          this.formLoading = false;
+        });
+    },
+    onCancel() {
+      this.dialog = false;
+      this.$emit("on-dialog-cancel");
+    },
+    onPage(page) {
+      this.query.page = page;
+      this.render();
+    },
+    onPageSizeChange(size) {
+      this.query.size = size;
+    },
+    onFilter(filterList) {
+      this.query.filters = filterList.map(item => {
+        return {
+          op: "like",
+          field: item.field,
+          args: [`%${item.value}%`]
+        };
+      });
+      this.render();
+    },
+    render() {
+      this.loading = true;
+      Service[this.service].findAll(this.query).then(rep => {
+        this.data = rep.data;
+        this.total = rep.total || rep.data.length;
+        this.loading = false;
+      });
+    },
+    onEdit(data) {
+      this.$emit("on-edit", data);
+      const values = JSON.parse(JSON.stringify(data));
+      delete values["_rowKey"];
+      delete values["_index"];
+      this.form = { ...values };
+      this.dialog = true;
+      this.action = "update";
+      this.updateId = values.id;
+    },
+    onDelete(id, str) {
+      this.$Modal.confirm({
+        title: "提示",
+        content: str ? str : "确定要删除当前选择数据吗？",
+        loading: true,
+        onOk: () => {
+          Service[this.service]
+            .remove(id)
+            .then(() => {
+              this.$Modal.remove();
+              this.$Message.success("删除成功！");
+              this.$nextTick(() => {
+                this.render();
+                this.$emit("on-delete");
+              });
+            })
+            .catch(() => {
+              this.loading = false;
+            });
+        }
+      });
+    },
+    onDeleteSelected() {
+      this.$Modal.confirm({
+        title: "提示",
+        content: "确定要删除当前选择的数据吗？",
+        loading: true,
+        onOk: () => {
+          batchService
+            .batchDelete(this.service, { id: this.selection.map(s => s.id) })
+            .then(() => {
+              this.selection = [];
+              this.$Modal.remove();
+              this.$Message.success("删除成功！");
+              this.$nextTick(() => {
+                this.render();
+                this.$emit("on-delete");
+              });
+            })
+            .catch(() => {
+              this.loading = false;
+            });
+          // Service[this.service]
+          //   .remove(id)
+          //   .then(() => {
+          //     this.$Modal.remove();
+          //     this.$Message.success('删除成功！');
+          //     this.render();
+          //     this.$emit('on-delete');
+          //     if (this.loads) {
+          //       this.init();
+          //     }
+          //   })
+          //   .catch(() => {
+          //     this.loading = false;
+          //   });
+        }
+      });
+    },
+    onSortChange(data) {
+      this.query.orders = [`${data.order == "desc" ? "-" : ""}${data.key}`];
+      this.render();
+    },
+    onRefresh() {
+      this.query = {
+        page: 1,
+        size: 20,
+        count: 1,
+        fields: ["*"],
+        orders: this.orders.length > 0 ? this.orders : ["weight", "-changed"],
+        filters: []
+      };
+      if (this.$refs["xFilter"]) {
+        this.$refs.xFilter.reset();
+      }
+      this._clearSortOn();
+      this.render();
+      this.$emit("refresh");
+    },
+    _clearSortOn() {
+      $(this.$refs.xTable.$el)
+        .find(".ivu-table-sort .on")
+        .removeClass("on");
+    },
+    onShowColumn() {
+      this.showColumn = true;
+    },
+    onSelectColumns(columns) {
+      this.localColumns = columns;
+    },
+    onSelectChange(selection) {
+      this.selection = selection;
+    },
+    initColumns() {
+      const local = this.$ls.get(this.service, null);
+      if (local) {
+        this.localColumns = this.columns.filter(column => {
+          if (!column.key) {
+            return true;
+          } else {
+            return local.indexOf(column.key) > -1;
+          }
+        });
+      } else {
+        this.localColumns = this.columns;
+      }
+    },
+    onExport() {
+      this.$refs.xTable.exportCsv({
+        filename: "export"
+      });
+    },
+    onRowClick(row, index) {
+      this.$emit("on-row-click", row, index);
+    },
+    doFilter(filter) {
+      const target = this.query.filters.find(
+        item => item.field == filter.field
+      );
+      if (target) {
+        target.args = filter.args;
+        target.op = filter.op;
+      } else {
+        this.query.filters.push(filter);
+      }
+
+      this.render();
+    }
+  },
+  created() {
+    if (this.service) {
+      this.initColumns();
+      this.render();
+    }
+  }
+};
+</script>
+
+<style lang="less">
+@class: wrapper;
+.@{class} {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  .ivu-card-body {
+    padding: 0;
+  }
+
+  .ivu-card:hover {
+    box-shadow: none;
+  }
+
+  &-header {
+    flex: 1;
+    display: flex;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 10px;
+
+    &__title {
+      font-size: 14px;
+      padding-right: 15px;
+      color: #333;
+      align-items: center;
+      display: flex;
+      i {
+        width: 3px;
+        background-color: #88b7e0;
+        display: inline-block;
+        height: 15px;
+        margin-right: 10px;
+      }
+    }
+    &__action {
+      padding-left: 15px;
+      flex: 1;
+    }
+  }
+
+  &-content {
+    padding: 0 0 10px 0;
+    display: flex;
+    .ivu-form-item {
+      margin-bottom: 0;
+    }
+
+    &__form {
+      flex: 1;
+      .ivu-input-group-append {
+        width: 64px;
+      }
+    }
+
+    &__btn {
+      min-width: 100px;
+      text-align: right;
+    }
+  }
+  &-body {
+    background-color: #fff;
+    box-shadow: 0px 0 0px 0px #f2f2f2, -1px 0px 1px 0px #ddd,
+      1px 0px 1px 0px #ddd, 0px 2px 2px 0px #ddd;
+
+    .x-table .ivu-table th {
+      background-color: #fff;
+      .ivu-table-cell {
+      }
+    }
+
+    .ivu-table-wrapper {
+      border: none;
+    }
+
+    .ivu-table:after {
+      content: none;
+    }
+
+    .ivu-table-fixed-right-header {
+      border-top: 1px solid #ddd;
+    }
+
+    .ivu-table-header .ivu-table-cell {
+      color: #888 !important;
+      font-weight: 700;
+    }
+
+    .ivu-table-cell {
+      color: #444;
+    }
+
+    .ivu-table-small th {
+      height: 40px;
+    }
+
+    .ivu-table th {
+      border-bottom: 1px solid #d1d5de;
+    }
+  }
+
+  &-page {
+    text-align: right;
+    padding: 5px 10px;
+  }
+
+  &.wrapper-simple {
+    .wrapper-page {
+      padding: 5px;
+      background-color: #f5f6fa;
+      border-left: 1px solid #ccc;
+      border-right: 1px solid #ccc;
+      border-bottom: 1px solid #ccc;
+    }
+
+    .wrapper-header {
+      border-bottom: none;
+    }
+  }
+}
+
+.x-table .ivu-table {
+  th {
+    background-color: #f5f6fa;
+  }
+}
+</style>

@@ -24,12 +24,12 @@
 <script>
 export default {
   name: "TowHorizontal",
-    props:{
-      split:{
-          type: Number,
-          default: 0.15
-      }
-    },
+  props: {
+    split: {
+      type: Number,
+      default: 0.15
+    }
+  },
   data() {
     return {
       spl: this.split,

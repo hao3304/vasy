@@ -1,9 +1,11 @@
 <template>
     <div class="f-slider">
-        <div class="f-slider__collapse">
-            <i class="iconfont icon-menu"></i>
-        </div>
-        <SideMenu @itemClick="onSelect" :data="sliderMenu" :border="false" :collapsed="collapsed" ></SideMenu>
+        <GeminiScrollbar style="height: 100%">
+            <div class="f-slider__collapse">
+                <i class="iconfont icon-menu"></i>
+            </div>
+            <SideMenu @itemClick="onSelect" :data="sliderMenu" :border="false" :collapsed="collapsed" ></SideMenu>
+        </GeminiScrollbar>
     </div>
 </template>
 
@@ -74,10 +76,14 @@ export default {
     .tree-icon {
       display: none;
     }
+    .tree-title {
+      padding-left: 24px;
+    }
   }
   .sidemenu .panel-icon {
     margin-top: -12px;
     height: 20px;
+    left: 15px;
   }
 
   .sidemenu .accordion .panel-title {
@@ -86,6 +92,7 @@ export default {
   .sidemenu .accordion .accordion-header {
     background: #222d32;
     color: #b8c7ce;
+    padding-left: 20px;
   }
   .sidemenu .accordion .accordion-body {
     background: #2c3b41;

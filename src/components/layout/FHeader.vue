@@ -22,7 +22,7 @@
             <Icon style="margin-right: 20px;" type="md-refresh" class="f-header__icon" @click="onRefresh"  size="22" />
             <Icon style="margin-right: 20px;" class="f-header__icon" custom="iconfont icon-quanping" v-if="!fullScreen" size="22" @click="onFullScreen" ></Icon>
             <Icon style="margin-right: 20px;" class="f-header__icon" custom="iconfont icon-009pingmusuoxiao" v-if="fullScreen"  size="22" @click="onExitFullScreen" ></Icon>
-            <Icon style="margin-right: 20px;" class="f-header__icon" custom="iconfont icon-tuichu" size="22" @click="onLogout" ></Icon>
+            <Icon style="margin-right: 10px;" class="f-header__icon" custom="iconfont icon-tuichu" size="22" @click="onLogout" ></Icon>
         </div>
     </div>
 </template>

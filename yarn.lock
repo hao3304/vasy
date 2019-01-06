@@ -3208,6 +3208,10 @@ gauge@~2.7.3:
     strip-ansi "^3.0.1"
     wide-align "^1.1.0"
 
+gemini-scrollbar@^1.5.3:
+  version "1.5.3"
+  resolved "https://registry.yarnpkg.com/gemini-scrollbar/-/gemini-scrollbar-1.5.3.tgz#7abc916e103e11f983f15856ef8c583cedef95cf"
+
 get-caller-file@^1.0.1:
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/get-caller-file/-/get-caller-file-1.0.3.tgz#f978fa4c90d1dfe7ff2d6beda2a515e713bdcf4a"
@@ -6849,6 +6853,12 @@ vue-eslint-parser@^4.0.2:
     espree "^4.1.0"
     esquery "^1.0.1"
     lodash "^4.17.11"
+
+vue-gemini-scrollbar@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/vue-gemini-scrollbar/-/vue-gemini-scrollbar-2.0.0.tgz#419935c89abe64d61e65af724cc1c9dba82e7b80"
+  dependencies:
+    gemini-scrollbar "^1.5.3"
 
 vue-hot-reload-api@^2.3.0:
   version "2.3.1"

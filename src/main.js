@@ -18,6 +18,9 @@ import "./filter";
 import "jquery";
 import "ztree/css/zTreeStyle/zTreeStyle.css";
 import "ztree";
+import GeminiScrollbar from "vue-gemini-scrollbar";
+
+Vue.use(GeminiScrollbar);
 Vue.use(iView);
 Vue.use(EasyUI);
 Vue.config.productionTip = false;

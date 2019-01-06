@@ -23,9 +23,18 @@
   .ivu-table {
     color: #000;
     font-size: 14px;
+    .ivu-table-row {
+      td:last-child {
+        border-right: none;
+      }
+    }
+
     th {
       background-color: #f9f9f9;
       font-weight: normal;
+    }
+    th:last-child {
+      border-right: none;
     }
 
     .ivu-table-cell {

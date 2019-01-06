@@ -88,6 +88,7 @@ export default {
             id: 670,
             text: "物联管理",
             iconCls: "iconfont icon-wulianwang",
+            open: false,
             children: [
               {
                 id: 671,
