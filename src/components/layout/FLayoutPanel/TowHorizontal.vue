@@ -1,7 +1,7 @@
 <template>
     <div class="f-panel-h" :class="{collapsed: collapsed}">
-        <Split v-model="split">
-            <div slot="left" class="split-pane split-pane-left" v-show="split!= 0">
+        <Split v-model="spl" v-if="split <= 0.5">
+            <div slot="left" class="split-pane split-pane-left" v-show="spl!= 0">
                 <slot name="left"></slot>
                 <div class="navbar-collapse" @click="onCollapse" v-show="!collapsed">
                     <div class="navbar-collapse-bg">
@@ -24,9 +24,15 @@
 <script>
 export default {
   name: "TowHorizontal",
+    props:{
+      split:{
+          type: Number,
+          default: 0.15
+      }
+    },
   data() {
     return {
-      split: 0.15,
+      spl: this.split,
       collapsed: false
     };
   },
@@ -36,7 +42,7 @@ export default {
       this.init();
     },
     init() {
-      this.split = this.collapsed ? 0 : 0.15;
+      this.spl = this.collapsed ? 0 : this.split;
     }
   }
 };

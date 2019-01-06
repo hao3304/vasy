@@ -27,7 +27,6 @@
 
                 <DatePicker  v-if="selectData.type == 'date'" v-model="filterValue"  type="daterange" :placeholder="selectData.placeholder" style="width: 100%"></DatePicker>
 
-
             </div>
             <div class="x-filter__append">
                 <Button type="success" style="width: 100%;" @click="onSearch">
@@ -36,7 +35,7 @@
             </div>
 
             <div  class="x-filter__senior" v-show="toolbar" >
-                <a v-show="mode!='simple'" href="javascript:;" style="margin-right: 10px" @click="showSenior = !showSenior">高级搜索</a>
+                <a v-show="mode!='simple'&&list.length > 1" href="javascript:;" style="margin-right: 10px" @click="showSenior = !showSenior">高级搜索</a>
                <slot name="right-block"></slot>
             </div>
             <div class="x-filter__buttons" >

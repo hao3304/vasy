@@ -6,6 +6,7 @@
         <f-slider></f-slider>
         <div class="main">
           <f-tab></f-tab>
+          <right-monitor></right-monitor>
         </div>
       </div>
       <f-footer></f-footer>
@@ -19,6 +20,8 @@ import FSlider from "@/components/layout/FSlider";
 import FFooter from "@/components/layout/FFooter";
 import FTab from "@/components/layout/FTab";
 
+import RightMonitor from "@/views/hn/Monitor/rightMonitor";
+
 import Login from "./Login";
 
 import { mapMutations, mapState } from "vuex";
@@ -28,7 +31,8 @@ export default {
     FSlider,
     FFooter,
     FTab,
-    Login
+    Login,
+    RightMonitor
   },
   computed: {
     ...mapState(["token"])
@@ -41,6 +45,5 @@ export default {
   }
 };
 </script>
-
 <style lang="less">
 </style>

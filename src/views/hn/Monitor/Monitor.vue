@@ -251,7 +251,8 @@ export default {
       const setting = {
         callback: {
           onClick: (e, type, node) => {
-            this.where.areas = node.id == 0 ? null : [node.id];
+            this.where.areas = !node.id ? null : [node.id];
+
             this.render();
           }
         }

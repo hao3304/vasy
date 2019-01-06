@@ -107,7 +107,7 @@ export default {
       height: 100%;
       li {
         list-style: none;
-        width: 100px;
+        width: 90px;
         height: 100%;
         display: inline-block;
         transition: all 0.2s;
