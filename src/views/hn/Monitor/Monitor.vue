@@ -1,7 +1,7 @@
 <template>
   <div class="page-monitor">
     <f-layout-panel>
-      <div slot="left">
+      <div slot="left" style="overflow-x: auto;height: 100%">
         <div class="page-monitor__tree ztree" ref="tree"></div>
       </div>
         <f-panel slot="right">
@@ -19,7 +19,7 @@
           </div>
           <div slot="body" slot-scope="props">
             <Table  v-show="mode == 'list'" class="f-table" :columns="columns" :loading="loading" :height="props.bodyHeight" :data="tableData" size="small" border></Table>
-            <station-map  v-show="mode == 'map'" :height="props.bodyHeight"></station-map>
+            <station-map  v-show="mode == 'map'" :show="mode == 'map'" :height="props.bodyHeight"></station-map>
           </div>
           <div slot="footer" v-show="mode == 'list'">
             <f-page  :total="total" @on-page-change="onPageChange"></f-page>
@@ -251,7 +251,7 @@ export default {
       const setting = {
         callback: {
           onClick: (e, type, node) => {
-            this.where.areas = [node.id];
+            this.where.areas = node.id == 0 ? null : [node.id];
             this.render();
           }
         }

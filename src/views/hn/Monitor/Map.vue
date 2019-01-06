@@ -14,7 +14,7 @@ const areaIcon = require("@/assets/images/icon/area.png");
 import Vue from "vue";
 export default {
   name: "Map",
-  props: ["height"],
+  props: ["height", "show"],
   data() {
     return {
       map: null,
@@ -59,8 +59,16 @@ export default {
   },
   watch: {
     stations() {
-      if (this.stations.length > 0) {
+      if (this.stations.length > 0 && this.show) {
         this.renderStation();
+      }
+    },
+    show() {
+      if (this.show && !this.map) {
+        this.$nextTick(() => {
+          this.renderMap();
+          this.renderStation();
+        });
       }
     }
   },
@@ -196,10 +204,10 @@ export default {
     }
   },
   mounted() {
-    this.renderMap();
-    if (this.stations.length > 0) {
-      this.renderStation();
-    }
+    // this.renderMap();
+    // if (this.stations.length > 0) {
+    //   this.renderStation();
+    // }
     window.closeInfoWindow = () => {
       this.map.clearInfoWindow();
     };

@@ -26,7 +26,9 @@ export default {
   methods: {
     init() {
       this.$nextTick(() => {
-        this.bodyHeight = this.$refs.panel_body.clientHeight;
+        this.bodyHeight = this.$refs.panel_body
+          ? this.$refs.panel_body.clientHeight
+          : 0;
       });
     }
   },
