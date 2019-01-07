@@ -1,19 +1,20 @@
 <template>
     <div class="page-dict-item">
-        <div class="page-dict-item__toolbar">
-            <span v-show="parent.id">当前选择名称：</span><Tag>{{parent.name}}</Tag>
-            <!--<Button @click="onAdd"  type="primary" icon="md-add" :disabled="!parent.id">新增子项</Button>-->
-        </div>
-        <div class="page-dict-item__body wrapper-body">
-            <Table
-                    :height="300"
-                    size="small"
-                :columns="columns"
-                    :data="data"
-            >
-            </Table>
-        </div>
-
+        <f-panel>
+            <div slot="header" style="text-align: left;padding-left: 5px">
+                <Button icon="md-add" type="primary"></Button>
+            </div>
+            <div slot="body" slot-scope="props">
+                <Table
+                        :height="props.bodyHeight+1"
+                        size="small"
+                        :columns="columns"
+                        :data="data"
+                        class="f-table"
+                >
+                </Table>
+            </div>
+        </f-panel>
         <Modal
                 v-model="dialog"
                 :title="title"
@@ -45,7 +46,6 @@
                 <Button @click="onOk" type="primary">确定</Button>
             </div>
         </Modal>
-
     </div>
 </template>
 
@@ -129,7 +129,7 @@ export default {
         {
           title: "更新时间",
           key: "changed",
-          width: 150,
+          mWidth: 150,
           render: (h, { row }) => {
             return h("div", {}, Vue.filter("dateFormat")(row.changed * 1000));
           }
@@ -137,6 +137,7 @@ export default {
         {
           title: "操作",
           width: 150,
+          fixed: "right",
           align: "center",
           render: (h, { row }) => {
             return h("div", [
@@ -195,7 +196,7 @@ export default {
         size: 999,
         count: 1,
         fields: ["*"],
-        orders: ["-changed"],
+        orders: ["weight"],
         filters: [
           {
             op: "eq",
@@ -222,7 +223,7 @@ export default {
     },
     onAdd() {
       this.dialog = true;
-      this.active = "add";
+      this.action = "add";
       this.$refs.form.resetFields();
       this.model = newDictItem();
       this.model.code = this.query.filters[0].args[0];
@@ -308,13 +309,6 @@ export default {
 
 <style lang="less">
 .page-dict-item {
-  position: relative;
-  &__toolbar {
-    position: absolute;
-    top: -45px;
-    left: 30px;
-    display: flex;
-    align-items: center;
-  }
+  height: 100%;
 }
 </style>

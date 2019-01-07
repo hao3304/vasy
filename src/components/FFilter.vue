@@ -33,14 +33,16 @@
                     <i style="font-size: 16px" class="ivu-icon ivu-icon-ios-search"></i>
                 </Button>
             </div>
-            <div class="x-filter__search" >
-                <a v-show="mode!='simple'&&list.length > 1" href="javascript:;" style="margin-right: 10px" @click="showSenior = !showSenior">高级搜索</a>
-            </div>
+
             <div class="x-filter__buttons"  >
                 <slot name="buttons"></slot>
             </div>
             <div  class="x-filter__senior" v-show="toolbar" >
-               <slot name="right-block"></slot>
+                <!--<a v-show="mode!='simple'&&list.length > 1" href="javascript:;" style="margin-right: 10px" @click="showSenior = !showSenior">高级搜索</a>-->
+                <Tooltip  content="高级搜索" placement="bottom" slot="right-block"   >
+                    <Button v-show="mode!='simple'&&list.length > 1" @click="showSenior = !showSenior" icon="md-search" style="padding: 5px 8px;margin-right: 10px;"></Button>
+                </Tooltip>
+                <slot name="right-block"></slot>
             </div>
 
         </div>
@@ -289,7 +291,7 @@ export default {
   }
   &__buttons {
     flex: 1;
-    text-align: right;
+    text-align: left;
   }
 }
 .x-filter-list {

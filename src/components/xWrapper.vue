@@ -2,10 +2,10 @@
     <div class="wrapper" >
         <f-panel>
             <div slot="header">
-                <x-filter ref="xFilter" :mode="mode" :list="filter" @on-filter="onFilter" >
+                <x-filter ref="xFilter" :mode="mode" :list="filter" width="180" @on-filter="onFilter" >
 
-                    <Button type="primary" @click="onAdd"  style="margin-right: 10px;margin-left: 40px;" icon="md-add" slot="buttons">新增</Button>
-                    <Button type="error" @click="onDeleteSelected" :disabled="selection.length==0" style="margin-right: 10px" icon="md-remove" slot="buttons">批量删除</Button>
+                    <Button type="primary" @click="onAdd"  style="margin-right: 10px;margin-left: 20px;" icon="md-add" slot="buttons"></Button>
+                    <Button type="error" @click="onDeleteSelected" :disabled="selection.length==0" style="margin-right: 10px" icon="md-remove" slot="buttons"></Button>
                     <!--<Button  @click="onAdd"  style="margin-right: 10px"  slot="buttons">删除</Button>-->
                     <slot name="buttons" slot="buttons"></slot>
                     <Tooltip content="导出" placement="bottom" slot="right-block"  >

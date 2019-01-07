@@ -26,6 +26,11 @@ export const routes = [
     path: "/system/role",
     name: "Role",
     component: () => import("@/views/system/role")
+  },
+  {
+    path: "/system/dict",
+    name: "Dict",
+    component: () => import("@/views/system/dict")
   }
 ];
 

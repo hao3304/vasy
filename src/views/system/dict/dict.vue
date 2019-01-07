@@ -1,7 +1,8 @@
 <template>
     <div class="page-dict">
-        <div>
+        <two-v>
             <x-wrapper
+                    slot="top"
                     style="padding-bottom: 0"
                     title="字典类型"
                     service="dict"
@@ -28,13 +29,13 @@
                         <Input v-model="model.remark" type="textarea" :placeholder="'请输入'+ dictModel.remark"  />
                     </FormItem>
                 </div>
-                <Button slot="buttons" style="margin-left: 10px" @click="onAddChild"  icon="md-add"  :disabled="!selectData">添加字典</Button>
-
+                <!--<Button slot="buttons" style="margin-left: 10px" @click="onAddChild"  icon="md-add"  :disabled="!selectData">添加字典</Button>-->
             </x-wrapper>
-        </div>
-        <div style="margin-top: 10px;">
-            <dict-item ref="dictItem"></dict-item>
-        </div>
+
+            <dict-item slot="bottom" ref="dictItem"></dict-item>
+
+        </two-v>
+
     </div>
 </template>
 
@@ -87,7 +88,7 @@ export default {
         {
           title: "更新时间",
           key: "changed",
-          width: 200,
+          minWidth: 200,
           sortable: "custom",
           render: (h, { row }) => {
             return h("div", {}, Vue.filter("dateFormat")(row.changed * 1000));
@@ -95,7 +96,8 @@ export default {
         },
         {
           title: "操作",
-          width: 200,
+          width: 150,
+          fixed: "right",
           align: "center",
           render: (h, { row }) => {
             return h("div", [

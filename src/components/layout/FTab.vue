@@ -4,7 +4,7 @@
             <TabPanel  title="首页" iconCls="fa fa-home">
                 <iframe :src="getPath('Monitor')" style="width: 100%;" :style="{height: windowHeight - 116 + 'px'}" frameborder="0"></iframe>
             </TabPanel>
-            <TabPanel v-for="tab in tabs" :closable="true" :target="tab" :title="tab.text" iconCls="fa fa-file-text-o">
+            <TabPanel v-for="(tab, index) in tabs" :closable="true" :target="tab" :title="tab.text" :key="index" iconCls="fa fa-file-text-o">
                 <iframe :src="getPath(tab.path)" style="width: 100%;" :style="{height: windowHeight - 116 + 'px'}" frameborder="0"></iframe>
             </TabPanel>
         </Tabs>
