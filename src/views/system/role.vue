@@ -1,5 +1,5 @@
 <template>
-    <div class="page-user">
+    <div class="page-role">
         <x-wrapper
                 title="角色"
                 service="role"
@@ -8,7 +8,7 @@
                 :rules="rules"
                 :filter="filter"
                 ref="wrapper"
-                :height="windowHeight - 260"
+                :height="windowHeight - 300"
                 :loads="true"
         >
             <div slot="dialog" slot-scope="{ model }">
@@ -40,7 +40,8 @@ export default {
       roleModel,
       columns: [
         {
-          width: 60,
+          width: 40,
+          align: "center",
           type: "selection"
         },
         {
@@ -88,7 +89,7 @@ export default {
         },
         {
           title: "更新时间",
-          width: 150,
+          minWidth: 150,
           key: "changed",
           sortable: "custom",
           render: (h, { row }) => {
@@ -98,6 +99,7 @@ export default {
         {
           title: "操作",
           width: 120,
+          fixed: "right",
           align: "center",
           render: (h, { row }) => {
             return h("div", [
@@ -174,4 +176,7 @@ export default {
 };
 </script>
 <style lang="less">
+.page-role {
+  height: 100%;
+}
 </style>

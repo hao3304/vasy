@@ -25,9 +25,10 @@
     "vue": "^2.5.17",
     "vue-apollo": "^3.0.0-beta.26",
     "vue-gemini-scrollbar": "^2.0.0",
+    "vue-ls": "^3.2.0",
     "vue-router": "^3.0.1",
     "vuex": "^3.0.1",
-    "vx-easyui": "^1.0.16",
+    "vx-easyui": "^1.1.2",
     "ztree": "^3.5.24"
   },
   "devDependencies": {

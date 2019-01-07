@@ -6874,6 +6874,11 @@ vue-loader@^15.4.2:
     vue-hot-reload-api "^2.3.0"
     vue-style-loader "^4.1.0"
 
+vue-ls@^3.2.0:
+  version "3.2.0"
+  resolved "https://registry.yarnpkg.com/vue-ls/-/vue-ls-3.2.0.tgz#33356ad3ec9c30dac203757cf4036abe4ff767b3"
+  integrity sha512-39FGQMrT9NbG5WGDJfxWj19ZD1tsVoBBN1n8qvq6/+uRB9BansQ9NSyclQ9TzZatRkkM/VEQo5oTsijdM5hGFw==
+
 vue-router@^3.0.1:
   version "3.0.2"
   resolved "https://registry.yarnpkg.com/vue-router/-/vue-router-3.0.2.tgz#dedc67afe6c4e2bc25682c8b1c2a8c0d7c7e56be"
@@ -6904,9 +6909,10 @@ vuex@^3.0.1:
   version "3.0.1"
   resolved "https://registry.yarnpkg.com/vuex/-/vuex-3.0.1.tgz#e761352ebe0af537d4bb755a9b9dc4be3df7efd2"
 
-vx-easyui@^1.0.16:
-  version "1.0.16"
-  resolved "https://registry.yarnpkg.com/vx-easyui/-/vx-easyui-1.0.16.tgz#c38aeec2ae97799bf79a3f82aa2899bc7875c483"
+vx-easyui@^1.1.2:
+  version "1.1.2"
+  resolved "https://registry.yarnpkg.com/vx-easyui/-/vx-easyui-1.1.2.tgz#b0f438e6dad2980facd609dd3069c702a8d144f8"
+  integrity sha512-VwEItRbsL9wUCYhm2rYxXsZMmnoOuyuNhQ9LyzAlNLgCuC02ADxTbkt8yAo5kI/lmXNTKXDP4XtTXUiVxtG7Wg==
 
 watchpack@^1.5.0:
   version "1.6.0"

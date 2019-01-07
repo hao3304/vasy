@@ -1,29 +1,25 @@
 <template>
     <div class="wrapper" >
-        <div class="wrapper-content" >
-            <div class="wrapper-content__form">
-                <slot name="form">
-                    <x-filter ref="xFilter" :mode="mode" :list="filter" @on-filter="onFilter" >
+        <f-panel>
+            <div slot="header">
+                <x-filter ref="xFilter" :mode="mode" :list="filter" @on-filter="onFilter" >
 
-                        <Button type="primary" @click="onAdd"  style="margin-right: 10px;margin-left: 40px;" icon="md-add" slot="buttons">新增</Button>
-                        <Button type="error" @click="onDeleteSelected" :disabled="selection.length==0" style="margin-right: 10px" icon="md-remove" slot="buttons">批量删除</Button>
-                        <!--<Button  @click="onAdd"  style="margin-right: 10px"  slot="buttons">删除</Button>-->
-                        <slot name="buttons" slot="buttons"></slot>
-                        <Tooltip content="导出" placement="bottom" slot="right-block"  >
-                            <Button @click="onExport" icon="md-download" style="padding: 5px 8px;margin-right: 10px;"></Button>
-                        </Tooltip>
-                        <Tooltip content="列设置" placement="bottom" slot="right-block"   >
-                            <Button @click="onShowColumn" icon="md-settings" style="padding: 5px 8px;margin-right: 10px;"></Button>
-                        </Tooltip>
-                        <Tooltip content="刷新" placement="bottom" slot="right-block"   >
-                            <Button @click="onRefresh" icon="md-refresh" style="padding: 5px 8px;"></Button>
-                        </Tooltip>
-                    </x-filter>
-                </slot>
+                    <Button type="primary" @click="onAdd"  style="margin-right: 10px;margin-left: 40px;" icon="md-add" slot="buttons">新增</Button>
+                    <Button type="error" @click="onDeleteSelected" :disabled="selection.length==0" style="margin-right: 10px" icon="md-remove" slot="buttons">批量删除</Button>
+                    <!--<Button  @click="onAdd"  style="margin-right: 10px"  slot="buttons">删除</Button>-->
+                    <slot name="buttons" slot="buttons"></slot>
+                    <Tooltip content="导出" placement="bottom" slot="right-block"  >
+                        <Button @click="onExport" icon="md-download" style="padding: 5px 8px;margin-right: 10px;"></Button>
+                    </Tooltip>
+                    <Tooltip content="列设置" placement="bottom" slot="right-block"   >
+                        <Button @click="onShowColumn" icon="md-settings" style="padding: 5px 8px;margin-right: 10px;"></Button>
+                    </Tooltip>
+                    <Tooltip content="刷新" placement="bottom" slot="right-block"   >
+                        <Button @click="onRefresh" icon="md-refresh" style="padding: 5px 8px;"></Button>
+                    </Tooltip>
+                </x-filter>
             </div>
-        </div>
-        <div class="wrapper-body">
-            <slot name="content">
+            <div slot="body" slot-scope="props">
                 <Table size="small"
                        ref="xTable"
                        @on-row-dblclick="onEdit"
@@ -31,18 +27,17 @@
                        :highlight-row="true"
                        @on-sort-change="onSortChange"
                        @on-row-click="onRowClick"
-                       :height="height"
-                       class="x-table"
+                       :height="props.bodyHeight"
+                       class="f-table"
                        :loading="loading"
+                        border
                        :columns="mColumns"
                        :data="data"></Table>
-            </slot>
-            <div class="wrapper-page"  v-if="page">
-                <slot name="page">
-                    <Page @on-change="onPage"  :page-size="query.size" :page-size-opts="[20, 50, 100]" @on-page-size-change="onPageSizeChange" :total="total"  show-total show-elevator show-sizer></Page>
-                </slot>
             </div>
-        </div>
+            <slot slot="footer">
+                <f-page  :total="total" @on-page-change="onPage"></f-page>
+            </slot>
+        </f-panel>
 
         <Modal
                 v-model="dialog"
@@ -50,10 +45,10 @@
                 :width="600"
                 :loading="formLoading"
         >
-            <Form ref="form" :label-width="75" :rules="rules" :model="form">
+            <i-form ref="form" :label-width="75" :rules="rules" :model="form">
                 <slot name="dialog" :model="form">
                 </slot>
-            </Form>
+            </i-form>
             <div slot="footer">
                 <Button @click="onCancel">取消</Button>
                 <Button @click="onOk" type="primary">确定</Button>
@@ -223,11 +218,9 @@ export default {
       this.$emit("on-dialog-cancel");
     },
     onPage(page) {
-      this.query.page = page;
+      this.query.page = page.pageNumber;
+      this.query.limit = page.pageSize;
       this.render();
-    },
-    onPageSizeChange(size) {
-      this.query.size = size;
     },
     onFilter(filterList) {
       this.query.filters = filterList.map(item => {
@@ -396,128 +389,7 @@ export default {
 </script>
 
 <style lang="less">
-@class: wrapper;
-.@{class} {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  .ivu-card-body {
-    padding: 0;
-  }
-
-  .ivu-card:hover {
-    box-shadow: none;
-  }
-
-  &-header {
-    flex: 1;
-    display: flex;
-    border-bottom: 1px solid #ddd;
-    padding-bottom: 10px;
-
-    &__title {
-      font-size: 14px;
-      padding-right: 15px;
-      color: #333;
-      align-items: center;
-      display: flex;
-      i {
-        width: 3px;
-        background-color: #88b7e0;
-        display: inline-block;
-        height: 15px;
-        margin-right: 10px;
-      }
-    }
-    &__action {
-      padding-left: 15px;
-      flex: 1;
-    }
-  }
-
-  &-content {
-    padding: 0 0 10px 0;
-    display: flex;
-    .ivu-form-item {
-      margin-bottom: 0;
-    }
-
-    &__form {
-      flex: 1;
-      .ivu-input-group-append {
-        width: 64px;
-      }
-    }
-
-    &__btn {
-      min-width: 100px;
-      text-align: right;
-    }
-  }
-  &-body {
-    background-color: #fff;
-    box-shadow: 0px 0 0px 0px #f2f2f2, -1px 0px 1px 0px #ddd,
-      1px 0px 1px 0px #ddd, 0px 2px 2px 0px #ddd;
-
-    .x-table .ivu-table th {
-      background-color: #fff;
-      .ivu-table-cell {
-      }
-    }
-
-    .ivu-table-wrapper {
-      border: none;
-    }
-
-    .ivu-table:after {
-      content: none;
-    }
-
-    .ivu-table-fixed-right-header {
-      border-top: 1px solid #ddd;
-    }
-
-    .ivu-table-header .ivu-table-cell {
-      color: #888 !important;
-      font-weight: 700;
-    }
-
-    .ivu-table-cell {
-      color: #444;
-    }
-
-    .ivu-table-small th {
-      height: 40px;
-    }
-
-    .ivu-table th {
-      border-bottom: 1px solid #d1d5de;
-    }
-  }
-
-  &-page {
-    text-align: right;
-    padding: 5px 10px;
-  }
-
-  &.wrapper-simple {
-    .wrapper-page {
-      padding: 5px;
-      background-color: #f5f6fa;
-      border-left: 1px solid #ccc;
-      border-right: 1px solid #ccc;
-      border-bottom: 1px solid #ccc;
-    }
-
-    .wrapper-header {
-      border-bottom: none;
-    }
-  }
-}
-
-.x-table .ivu-table {
-  th {
-    background-color: #f5f6fa;
-  }
+.wrapper {
+  height: 100%;
 }
 </style>

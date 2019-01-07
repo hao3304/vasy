@@ -3,7 +3,6 @@ import Router from "vue-router";
 import Monitor from "./views/hn/Monitor";
 
 import About from "@/views/About";
-import User from "@/views/system/user";
 
 Vue.use(Router);
 
@@ -21,7 +20,12 @@ export const routes = [
   {
     path: "/system/user",
     name: "User",
-    component: User
+    component: () => import("@/views/system/user")
+  },
+  {
+    path: "/system/role",
+    name: "Role",
+    component: () => import("@/views/system/role")
   }
 ];
 

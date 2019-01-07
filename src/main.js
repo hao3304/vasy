@@ -18,8 +18,13 @@ import "./filter";
 import "jquery";
 import "ztree/css/zTreeStyle/zTreeStyle.css";
 import "ztree";
+import Storage from "vue-ls";
 import GeminiScrollbar from "vue-gemini-scrollbar";
-
+Vue.use(Storage, {
+  namespace: "hsn__", // key prefix
+  name: "ls", // name variable Vue.[ls] or this.[$ls],
+  storage: "local" // storage name session, local, memory
+});
 Vue.use(GeminiScrollbar);
 Vue.use(iView);
 Vue.use(EasyUI);
@@ -32,7 +37,7 @@ export default new Vue({
   store,
   apolloProvider,
   render(h) {
-    if (this.$route.name) {
+    if (window.location.hash != "#/") {
       return h(Views);
     } else {
       return h(App);

@@ -4,7 +4,7 @@
             <div class="f-slider__collapse">
                 <i class="iconfont icon-menu"></i>
             </div>
-            <SideMenu @itemClick="onSelect" :data="sliderMenu" :border="false" :collapsed="collapsed" ></SideMenu>
+            <SideMenu @itemClick="onSelect" v-if="sliderMenu.length > 0" :data="sliderMenu" :border="false" :collapsed="collapsed" ></SideMenu>
         </GeminiScrollbar>
     </div>
 </template>

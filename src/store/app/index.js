@@ -10,6 +10,7 @@ export default {
           {
             id: "1-1",
             text: "热网管理",
+            state: "open",
             iconCls: "iconfont icon-wang",
             children: [
               {
@@ -66,6 +67,7 @@ export default {
             id: 666,
             text: "平台监控",
             iconCls: "iconfont icon-jiankong",
+            state: "open",
             children: [
               {
                 id: 667,
@@ -204,9 +206,11 @@ export default {
     set_module(state, payload) {
       state.selectModule = payload;
       const target = state.module.find(m => m.id == state.selectModule);
-
-      state.sliderMenu = target.children;
-      state.selectModuleTitle = target.text;
+      state.sliderMenu = [];
+      setTimeout(() => {
+        state.sliderMenu = target.children;
+        state.selectModuleTitle = target.text;
+      }, 1);
     },
     set_slider_active(state, payload) {
       state.sliderActive = payload;

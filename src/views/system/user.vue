@@ -16,24 +16,42 @@
                 @on-save="onChangeRole"
         >
             <div slot="dialog" slot-scope="{ model }">
-                <Tabs type="card" v-model="active">
-                    <TabPane label="基本信息" name="one">
-                        <FormItem :label="userModel.name" prop="name">
-                            <Input v-model="model.name" :placeholder="'请输入'+ userModel.name"  />
-                        </FormItem>
-                        <FormItem :label="userModel.sn" >
-                            <Input v-model="model.sn" :placeholder="'请输入'+ userModel.sn"  />
-                        </FormItem>
+                <Tabs  v-model="active" style="margin: -16px;">
+                    <TabPanel title="基本信息" style="padding: 10px" name="one">
+                        <Row>
+                            <i-col :span="12">
+                                <FormItem :label="userModel.name" prop="name">
+                                    <Input v-model="model.name" :placeholder="'请输入'+ userModel.name"  />
+                                </FormItem>
+                            </i-col>
+                            <i-col :span="12">
+                                <FormItem :label="userModel.sn" >
+                                    <Input v-model="model.sn" :placeholder="'请输入'+ userModel.sn"  />
+                                </FormItem>
+                            </i-col>
+                        </Row>
+
+
                         <FormItem :label="userModel.type" prop="type">
                             <Select v-model="model.type" :placeholder="'请选择'+ userModel.type">
                             </Select>
                         </FormItem>
-                        <FormItem :label="userModel.account" prop="account">
-                            <Input v-model="model.account" :placeholder="'请输入'+ userModel.account"  />
-                        </FormItem>
-                        <FormItem :label="userModel.password" prop="password" v-if="!model.id">
-                            <Input v-model="model.password" type="password" :placeholder="'请输入'+ userModel.password"  />
-                        </FormItem>
+
+                        <Row>
+                            <i-col :span="12">
+                                <FormItem :label="userModel.account" prop="account">
+                                    <Input v-model="model.account" :placeholder="'请输入'+ userModel.account"  />
+                                </FormItem>
+                            </i-col>
+                            <i-col :span="12">
+                                <FormItem :label="userModel.password" prop="password" v-if="!model.id">
+                                    <Input v-model="model.password" type="password" :placeholder="'请输入'+ userModel.password"  />
+                                </FormItem>
+                            </i-col>
+                        </Row>
+
+
+
                         <FormItem :label="userModel.auth" prop="type">
                             <Select v-model="model.auth" :placeholder="'请选择'+ userModel.auth">
                             </Select>
@@ -50,41 +68,61 @@
                         <FormItem :label="userModel.admin">
                            <i-switch v-model="model.admin" :true-value="1" :false-value="0"></i-switch>
                         </FormItem>
-                    </TabPane>
-                    <TabPane label="详细信息" name="two">
+                    </TabPanel>
+                    <TabPanel title="详细信息" style="padding: 10px" name="two">
                         <FormItem :label="userModel.avatar">
                             <upload-pic v-model="model.avatar"></upload-pic>
                         </FormItem>
                         <FormItem :label="userModel.idcard">
                             <Input v-model="model.idcard" :placeholder="'请输入'+ userModel.idcard"  />
                         </FormItem>
-                        <FormItem :label="userModel.birth">
-                            <DatePicker type="date" v-model="model.birth" :placeholder="'请选择'+ userModel.birth" style="width: 200px"></DatePicker>
-                        </FormItem>
-                        <FormItem :label="userModel.sex">
-                            <RadioGroup v-model.number="model.sex">
-                                <Radio :label="0">未知</Radio>
-                                <Radio :label="1">男</Radio>
-                                <Radio :label="2">女</Radio>
-                            </RadioGroup>
-                        </FormItem>
-                        <FormItem :label="userModel.job">
-                            <Input v-model="model.job" :placeholder="'请输入'+ userModel.job"  />
-                        </FormItem>
-                        <FormItem :label="userModel.email">
-                            <Input v-model="model.email" :placeholder="'请输入'+ userModel.email"  />
-                        </FormItem>
-                        <FormItem :label="userModel.mobile">
-                            <Input v-model="model.mobile" :placeholder="'请输入'+ userModel.mobile"  />
-                        </FormItem>
-                        <FormItem :label="userModel.smobile">
-                            <Input v-model="model.smobile" :placeholder="'请输入'+ userModel.smobile"  />
-                        </FormItem>
+                        <Row>
+                            <i-col :span="12">
+                                <FormItem :label="userModel.birth">
+                                    <DatePicker type="date" v-model="model.birth" :placeholder="'请选择'+ userModel.birth" style="width: 200px"></DatePicker>
+                                </FormItem>
+                            </i-col>
+                            <i-col :span="12">
+
+                                <FormItem :label="userModel.sex">
+                                    <RadioGroup v-model.number="model.sex">
+                                        <Radio :label="0">未知</Radio>
+                                        <Radio :label="1">男</Radio>
+                                        <Radio :label="2">女</Radio>
+                                    </RadioGroup>
+                                </FormItem>
+                            </i-col>
+                            <i-col :span="12">
+                                <FormItem :label="userModel.job">
+                                    <Input v-model="model.job" :placeholder="'请输入'+ userModel.job"  />
+                                </FormItem>
+                            </i-col>
+
+                            <i-col :span="12">
+                                <FormItem :label="userModel.email">
+                                    <Input v-model="model.email" :placeholder="'请输入'+ userModel.email"  />
+                                </FormItem>
+                            </i-col>
+                            <i-col :span="12">
+                                <FormItem :label="userModel.mobile">
+                                    <Input v-model="model.mobile" :placeholder="'请输入'+ userModel.mobile"  />
+                                </FormItem>
+                            </i-col>
+                            <i-col :span="12">
+
+                                <FormItem :label="userModel.smobile">
+                                    <Input v-model="model.smobile" :placeholder="'请输入'+ userModel.smobile"  />
+                                </FormItem>
+                            </i-col>
+                        </Row>
+
+
+
                         <FormItem :label="userModel.telephone">
                             <Input v-model="model.telephone" :placeholder="'请输入'+ userModel.telephone"  />
                         </FormItem>
-                    </TabPane>
-                    <TabPane label="用户角色" name="three">
+                    </TabPanel>
+                    <TabPanel title="用户角色" style="padding: 10px" name="three">
                         <div class="role-list">
                             <CheckboxGroup v-model="targetRole">
                                 <div class="role-list__item" v-for="r in roles" :key="r.id">
@@ -94,7 +132,7 @@
                                 </div>
                             </CheckboxGroup>
                         </div>
-                    </TabPane>
+                    </TabPanel>
                 </Tabs>
             </div>
         </x-wrapper>
@@ -131,7 +169,8 @@ export default {
       userModel,
       columns: [
         {
-          width: 60,
+          width: 40,
+          align: "center",
           type: "selection"
         },
         {
