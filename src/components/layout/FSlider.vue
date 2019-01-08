@@ -11,6 +11,7 @@
 
 <script>
 import { mapState, mapMutations } from "vuex";
+import { routes } from "@/router";
 export default {
   name: "FSlider",
   data() {
@@ -25,8 +26,18 @@ export default {
   methods: {
     ...mapMutations("app", ["add_tab"]),
     onSelect(menu) {
-      this.add_tab(menu);
+      const route = routes.find(route => route.name == menu.path);
+      const m = {
+        text: menu.text,
+        path: route ? route.path : "/404"
+      };
+      this.add_tab(m);
     }
+  },
+  mounted() {
+    window.eventBus.$on("add_tab", payload => {
+      this.add_tab(payload);
+    });
   }
 };
 </script>
@@ -118,13 +129,13 @@ export default {
     vertical-align: top;
     border-style: solid;
     transform: rotate(45deg);
-    width: 4px;
-    height: 4px;
+    width: 6px;
+    height: 6px;
     content: "";
     position: absolute;
-    right: 10px;
+    right: 15px;
     top: 50%;
-    margin-top: -3px;
+    margin-top: -4px;
     border-width: 0 1px 1px 0;
   }
   .sidemenu .accordion-header-selected::after {

@@ -283,7 +283,7 @@ export default {
         {
           title: "操作",
           fixed: "right",
-          width: 150,
+          width: 120,
           align: "center",
           render: (h, { row }) => {
             return h("div", [

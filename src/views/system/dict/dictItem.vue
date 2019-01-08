@@ -2,14 +2,17 @@
     <div class="page-dict-item">
         <f-panel>
             <div slot="header" style="text-align: left;padding-left: 5px">
-                <Button icon="md-add" type="primary"></Button>
+                <Button @click="onAdd" type="primary" :disabled="!pid">
+                    <i class="iconfont icon-xinzeng" style="font-size: 12px"></i>
+                </Button>
             </div>
             <div slot="body" slot-scope="props">
                 <Table
-                        :height="props.bodyHeight+1"
+                        :height="props.bodyHeight"
                         size="small"
                         :columns="columns"
                         :data="data"
+                        border
                         class="f-table"
                 >
                 </Table>
@@ -18,10 +21,11 @@
         <Modal
                 v-model="dialog"
                 :title="title"
+                fullscreen
                 :width="600"
                 :loading="formLoading"
         >
-            <Form ref="form" :label-width="75" :rules="rules" :model="model">
+            <i-form ref="form" :label-width="75" :rules="rules" :model="model">
                 <FormItem :label="dictItemModel.name" prop="name">
                     <Input v-model="model.name" :placeholder="'请输入'+ dictItemModel.name"  />
                 </FormItem>
@@ -40,7 +44,7 @@
                         <Radio :label="0">禁用</Radio>
                     </RadioGroup>
                 </FormItem>
-            </Form>
+            </i-form>
             <div slot="footer">
                 <Button @click="onCancel">取消</Button>
                 <Button @click="onOk" type="primary">确定</Button>
@@ -56,6 +60,7 @@ const { newDictItem, dictItemModel } = types;
 import itemService from "@/services/dictItem";
 
 export default {
+  props: ["pid"],
   name: "dictItem",
   data() {
     return {
@@ -66,7 +71,8 @@ export default {
         {
           title: "#",
           type: "index",
-          width: 80
+          width: 40,
+          align: "center"
         },
         {
           title: dictItemModel.code,
@@ -207,12 +213,20 @@ export default {
       }
     };
   },
+  watch: {
+    pid() {
+      this.setParent();
+    }
+  },
   methods: {
-    setParent(data) {
-      this.parent = data;
-      this.model.code = data.id;
-      this.query.filters[0].args = [data.id];
-      this.render();
+    setParent() {
+      if (this.pid) {
+        this.model.code = this.pid;
+        this.query.filters[0].args = [this.pid];
+        this.render();
+      } else {
+        this.data = [];
+      }
     },
     render() {
       this.loading = true;

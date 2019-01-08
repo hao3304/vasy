@@ -38,7 +38,10 @@ query GetEvents(
       uname
       rdep
       remark
+      contact
       status
+      reason
+      desc
       ticket {
         id
       }
@@ -65,4 +68,76 @@ mutation UpdatePosition($id: String, $position: String) {
   biz_event_position(id: $id, position: $position) {
     id
   }
+}
+
+mutation EventCreate(
+  $time: Int64!
+  $category: String!
+  $desc: String!
+  $address: String!
+  $position: String
+  $remark: String
+  $contact: String!
+  $mobile: String!
+  $utype: String
+  $usn: String
+  $uname: String
+  $reason: String
+) {
+  biz_event_create(
+    form: {
+      time: $time
+      category: $category
+      desc: $desc
+      address: $address
+      position: $position
+      remark: $remark
+      contact: $contact
+      mobile: $mobile
+      utype: $utype
+      usn: $usn
+      uname: $uname
+      reason: $reason
+    }
+  ) {
+    id
+  }
+}
+
+mutation EventUpdate(
+  $id: String!
+  $time: Int64
+  $category: String
+  $desc: String
+  $address: String
+  $position: String
+  $remark: String
+  $contact: String
+  $mobile: String
+  $utype: String
+  $usn: String
+  $uname: String
+  $reason: String
+) {
+  biz_event_update(
+    id: $id
+    form: {
+      time: $time
+      category: $category
+      desc: $desc
+      address: $address
+      position: $position
+      remark: $remark
+      contact: $contact
+      mobile: $mobile
+      utype: $utype
+      usn: $usn
+      uname: $uname
+      reason: $reason
+    }
+  )
+}
+
+mutation EventDelete($id: String!) {
+  biz_event_remove(id: $id)
 }

@@ -36,19 +36,27 @@ export default {
       {
         id: "3",
         text: "客服管理",
-        iconCls: "icon-kefu",
+        iconCls: " icon-kefu",
         children: [
           {
-            id: "3-1",
-            text: "热线记录",
-            iconCls: "iconfont icon-yichangshijianliebiaocopy",
-            path: "Event"
-          },
-          {
-            id: "3-2",
-            text: "工单管理",
-            iconCls: "iconfont icon-order",
-            path: "Ticket"
+            id: "3-3",
+            text: "客服管理",
+            iconCls: "iconfont icon-kefu",
+            state: "open",
+            children: [
+              {
+                id: "3-1",
+                text: "热线记录",
+                iconCls: "iconfont icon-yichangshijianliebiaocopy",
+                path: "Event"
+              },
+              {
+                id: "3-2",
+                text: "工单管理",
+                iconCls: "iconfont icon-order",
+                path: "Ticket"
+              }
+            ]
           }
         ]
       },
@@ -102,11 +110,11 @@ export default {
                 text: "站点管理",
                 path: "Station"
               },
-              {
-                id: 676,
-                text: "视频区域",
-                path: "Video"
-              },
+              // {
+              //   id: 676,
+              //   text: "视频区域",
+              //   path: "Video"
+              // },
               {
                 id: 673,
                 text: "权限管理",
@@ -158,12 +166,12 @@ export default {
           },
           {
             id: 780,
-            text: "流程管理",
+            text: "业务管理",
             iconCls: "iconfont icon-liuchengmoxing",
             children: [
               {
                 id: 781,
-                text: "工单配置",
+                text: "工单流程",
                 path: "TicketType"
               }
             ]

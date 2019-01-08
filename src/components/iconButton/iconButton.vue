@@ -29,5 +29,12 @@ export default {
   &.text-error {
     color: @error-color;
   }
+
+  &.text-info {
+    color: @info-color;
+  }
+  &.text-success {
+    color: @success-color;
+  }
 }
 </style>

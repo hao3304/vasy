@@ -9,11 +9,12 @@ import "vx-easyui/dist/themes/icon.css";
 import "vx-easyui/dist/themes/vue.css";
 import EasyUI from "vx-easyui";
 import apolloProvider from "./apollo";
+import vClickOutside from "v-click-outside";
 import "@/styles/index.less";
 import "iview/dist/styles/iview.css";
 import "@/styles/theme.less";
 import "./components";
-import iView from "iview";
+import "@/components/iview";
 import "./filter";
 import "jquery";
 import "ztree/css/zTreeStyle/zTreeStyle.css";
@@ -26,8 +27,8 @@ Vue.use(Storage, {
   storage: "local" // storage name session, local, memory
 });
 Vue.use(GeminiScrollbar);
-Vue.use(iView);
 Vue.use(EasyUI);
+Vue.use(vClickOutside);
 Vue.config.productionTip = false;
 
 window.eventBus = new Vue();

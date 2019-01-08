@@ -1,7 +1,7 @@
 <template>
     <div>
-        <div class="x-filter">
-            <div class="x-filter__prepend">
+        <div class="f-filter">
+            <div class="f-filter__prepend">
                 <!--<Select style="width: 100%" v-model="dataType" @on-change="onSelectChange">-->
                     <!--<Option v-for="(l, index) in list" :value="l.field" :key="index">{{l.name}}</Option>-->
                 <!--</Select>-->
@@ -15,11 +15,11 @@
                         </DropdownItem>
                     </DropdownMenu>
                 </Dropdown>
-                <span class="x-filter__prepend-name"  v-show="selectData.name">
+                <span class="f-filter__prepend-name"  v-show="selectData.name">
                     {{selectData.name}}：
                 </span>
             </div>
-            <div class="x-filter__content" :style="{width: width + 'px'}" >
+            <div class="f-filter__content" :style="{width: width + 'px'}" >
                 <Input @on-enter="onSearch" style="width: 100%" v-model="filterValue" :placeholder="selectData.placeholder" v-if="selectData.type == 'input'" />
                 <Select v-if="selectData.type == 'select'" v-model="filterValue"  :placeholder="selectData.placeholder">
                     <Option v-for="item in selectData.data" :label="item.name" :value="item.value" :key="item.value"></Option>
@@ -28,30 +28,30 @@
                 <DatePicker  v-if="selectData.type == 'date'" v-model="filterValue"  type="daterange" :placeholder="selectData.placeholder" style="width: 100%"></DatePicker>
 
             </div>
-            <div class="x-filter__append">
-                <Button type="success" style="width: 100%;" @click="onSearch">
+            <div class="f-filter__append">
+                <Button type="success" style="width: 100%;height: 100%" @click="onSearch">
                     <i style="font-size: 16px" class="ivu-icon ivu-icon-ios-search"></i>
                 </Button>
             </div>
 
-            <div class="x-filter__buttons"  >
+            <div class="f-filter__buttons"  >
                 <slot name="buttons"></slot>
             </div>
-            <div  class="x-filter__senior" v-show="toolbar" >
+            <div  class="f-filter__senior" v-show="toolbar" >
                 <!--<a v-show="mode!='simple'&&list.length > 1" href="javascript:;" style="margin-right: 10px" @click="showSenior = !showSenior">高级搜索</a>-->
-                <Tooltip  content="高级搜索" placement="bottom" slot="right-block"   >
-                    <Button v-show="mode!='simple'&&list.length > 1" @click="showSenior = !showSenior" icon="md-search" style="padding: 5px 8px;margin-right: 10px;"></Button>
+                <Tooltip  content="高级搜索" placement="bottom" slot="right-block"  style="margin-right: 10px;"  >
+                    <Button v-show="mode!='simple'&&list.length > 1" @click="showSenior = !showSenior" icon="md-search" style="padding: 5px 8px;"></Button>
                 </Tooltip>
                 <slot name="right-block"></slot>
             </div>
 
         </div>
-        <div class="x-filter-list" v-show="filterList.length > 0">
-            <div class="x-filter-list__name">
+        <div class="f-filter-list" v-show="filterList.length > 0">
+            <div class="f-filter-list__name">
                 <Icon type="ios-funnel" />
                 检索项：
             </div>
-            <div class="x-filter-list__items">
+            <div class="f-filter-list__items">
                 <span v-for="l in filterList" :key="l.field">
                         {{l.name}}：{{getValue(l)}}
                     <Icon type="md-close" @click="onRemove(l.field)"  />
@@ -60,7 +60,7 @@
             </div>
         </div>
         <Modal :width="1000" title="高级搜索" v-model="showSenior">
-           <div class="x-filter-senior" >
+           <div class="f-filter-senior" >
                <i-form label-position="left"  :inline="true"  :label-width="80">
                    <Row :gutter="40">
                        <i-col :span="8" v-for="n in list" :key="n.field">
@@ -218,17 +218,27 @@ export default {
 };
 </script>
 
+
 <style lang="less"  >
-.x-filter {
+.f-filter {
   display: flex;
-  /** {*/
-  /*line-height: normal;*/
-  /*}*/
+  * {
+    line-height: normal;
+  }
+
+  .ivu-input-icon {
+    line-height: 32px;
+  }
 
   .ivu-input:focus {
     border-color: #ccc;
     box-shadow: none;
   }
+
+  .ivu-input {
+    border-radius: 0;
+  }
+
   &__prepend {
     display: flex;
     border-top: 1px solid #ccc;
@@ -268,6 +278,7 @@ export default {
     .ivu-select-selection {
       border-left: none !important;
       border-right: none !important;
+      border-radius: 0;
       border-color: #ccc !important;
     }
   }
@@ -277,24 +288,19 @@ export default {
     .ivu-btn:focus {
       box-shadow: none;
     }
-  }
-  &__search {
-    line-height: 32px;
-    padding: 0 10px;
+
+    .ivu-btn {
+      border-top-left-radius: 0;
+      border-bottom-left-radius: 0;
+    }
   }
   &__senior {
-    padding: 0 5px;
-    overflow: hidden;
-
-    white-space: nowrap;
+    text-align: right;
+    flex: 1;
     line-height: 32px;
   }
-  &__buttons {
-    flex: 1;
-    text-align: left;
-  }
 }
-.x-filter-list {
+.f-filter-list {
   display: flex;
   &__name {
     color: #666;
@@ -333,7 +339,7 @@ export default {
   }
 }
 
-.x-filter-senior {
+.f-filter-senior {
   padding-right: 30px;
   .ivu-col {
     margin-top: 10px;

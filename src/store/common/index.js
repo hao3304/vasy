@@ -130,6 +130,16 @@ export default {
         name: "报警",
         id: 4
       }
+    ],
+    modelType: [
+      {
+        id: 1,
+        name: "站点模版"
+      },
+      {
+        id: 2,
+        name: "设备模版"
+      }
     ]
   },
   actions: {

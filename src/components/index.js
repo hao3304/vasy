@@ -7,6 +7,10 @@ import FLayoutPanel from "./layout/FLayoutPanel";
 import TwoV from "./layout/FLayoutPanel/TowVertical";
 import XWrapper from "./xWrapper";
 import iconButton from "./iconButton";
+import notFind from "./notFind";
+import treeSelect from "./treeSelect";
+import mapPosition from "./mapPosition";
+import userSelect from "./userSelect";
 
 Vue.component("FFilter", FFilter);
 Vue.component("Iconfont", iconfont);
@@ -17,3 +21,7 @@ Vue.component("TwoH", FLayoutPanel);
 Vue.component("TwoV", TwoV);
 Vue.component("XWrapper", XWrapper);
 Vue.component("IconButton", iconButton);
+Vue.component("notFind", notFind);
+Vue.component("treeSelect", treeSelect);
+Vue.component("mapPosition", mapPosition);
+Vue.component("userSelect", userSelect);

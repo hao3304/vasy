@@ -2,21 +2,28 @@
     <div class="wrapper" >
         <f-panel>
             <div slot="header">
-                <x-filter ref="xFilter" :mode="mode" :list="filter" width="180" @on-filter="onFilter" >
+                <x-filter ref="xFilter" :mode="mode" :list="filter" :width="160" @on-filter="onFilter" >
 
-                    <Button type="primary" @click="onAdd"  style="margin-right: 10px;margin-left: 20px;" icon="md-add" slot="buttons"></Button>
-                    <Button type="error" @click="onDeleteSelected" :disabled="selection.length==0" style="margin-right: 10px" icon="md-remove" slot="buttons"></Button>
+                    <Tooltip content="新增" placement="bottom" style="margin-left: 20px;" slot="buttons" >
+                        <Button type="primary" @click="onAdd" style="height: 32px;" >
+                            <i class="iconfont icon-xinzeng" style="font-size: 12px"></i>
+                        </Button>
+                    </Tooltip>
+
+                    <Button type="error" @click="onDeleteSelected" v-if="multiDel" :disabled="selection.length==0" style="margin-right: 10px" icon="md-remove" slot="buttons"></Button>
                     <!--<Button  @click="onAdd"  style="margin-right: 10px"  slot="buttons">删除</Button>-->
                     <slot name="buttons" slot="buttons"></slot>
-                    <Tooltip content="导出" placement="bottom" slot="right-block"  >
-                        <Button @click="onExport" icon="md-download" style="padding: 5px 8px;margin-right: 10px;"></Button>
+                    <Tooltip content="导出" placement="bottom" slot="right-block" style="margin-right: 10px;" >
+                        <Button @click="onExport" icon="md-download" style="padding: 5px 8px;"></Button>
                     </Tooltip>
-                    <Tooltip content="列设置" placement="bottom" slot="right-block"   >
-                        <Button @click="onShowColumn" icon="md-settings" style="padding: 5px 8px;margin-right: 10px;"></Button>
+                    <Tooltip content="列设置" placement="bottom" slot="right-block" style="margin-right: 10px;"  >
+                        <Button @click="onShowColumn" icon="md-settings" style="padding: 5px 8px;"></Button>
                     </Tooltip>
-                    <Tooltip content="刷新" placement="bottom" slot="right-block"   >
+                    <Tooltip content="刷新" placement="bottom" slot="right-block" style="margin-right: 5px;"  >
                         <Button @click="onRefresh" icon="md-refresh" style="padding: 5px 8px;"></Button>
                     </Tooltip>
+
+                    <slot slot="right-block" name="right-block"></slot>
                 </x-filter>
             </div>
             <div slot="body" slot-scope="props">
@@ -43,7 +50,7 @@
                 v-model="dialog"
                 :title="modalTitle"
                 :width="600"
-                :loading="formLoading"
+                fullscreen
         >
             <i-form ref="form" :label-width="75" :rules="rules" :model="form">
                 <slot name="dialog" :model="form">
@@ -51,7 +58,7 @@
             </i-form>
             <div slot="footer">
                 <Button @click="onCancel">取消</Button>
-                <Button @click="onOk" type="primary">确定</Button>
+                <Button @click="onOk" :loading="formLoading" type="primary">确定</Button>
             </div>
         </Modal>
 
@@ -100,6 +107,10 @@ export default {
     orders: {
       type: Array,
       default: () => []
+    },
+    multiDel: {
+      type: Boolean,
+      default: false
     }
   },
   components: {
@@ -219,7 +230,7 @@ export default {
     },
     onPage(page) {
       this.query.page = page.pageNumber;
-      this.query.limit = page.pageSize;
+      this.query.size = page.pageSize;
       this.render();
     },
     onFilter(filterList) {

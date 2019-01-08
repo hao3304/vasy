@@ -1,6 +1,6 @@
 <template>
     <div class="f-panel">
-        <div class="f-panel__header">
+        <div class="f-panel__header" v-show="header">
             <slot name="header"></slot>
         </div>
         <div class="f-panel__body"  ref="panel_body">
@@ -15,6 +15,12 @@
 <script>
 import base from "@/mixins/base";
 export default {
+  props: {
+    header: {
+      type: Boolean,
+      default: true
+    }
+  },
   name: "FPanel",
   mixins: [base],
   data() {
@@ -35,7 +41,6 @@ export default {
   mounted() {
     this.init();
     if (this.timer) clearInterval();
-
     this.timer = setInterval(() => {
       this.init();
     }, 20);

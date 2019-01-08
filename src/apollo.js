@@ -13,6 +13,10 @@ const iotLink = new HttpLink({
   uri: process.env.VUE_APP_BOOT + "/hsn/iot"
 });
 
+const lineLink = new HttpLink({
+  uri: process.env.VUE_APP_BOOT + "/hsn/hotline"
+});
+
 const middlewareLink = new ApolloLink((operation, forward) => {
   operation.setContext({
     headers: {
@@ -41,7 +45,16 @@ export const iotClient = new ApolloClient({
   connectToDevTools: true
 });
 
+export const lineClient = new ApolloClient({
+  link: error.concat(middlewareLink.concat(lineLink)),
+  cache: new InMemoryCache(),
+  connectToDevTools: true
+});
+
 Vue.use(VueApollo);
 export default new VueApollo({
-  defaultClient: iotClient
+  defaultClient: iotClient,
+  clients: {
+    line: lineClient
+  }
 });

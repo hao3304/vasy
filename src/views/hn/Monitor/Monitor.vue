@@ -7,14 +7,14 @@
         <f-panel slot="right">
           <div slot="header">
             <f-filter :list="filter" @on-filter="onFilter" >
-              <ButtonGroup slot="buttons" >
+              <IButtonGroup slot="right-block"  >
                 <Button @click="mode = 'list'" :type="mode=='list'?'primary':'default'" >
-                  <Icon custom="iconfont icon-liebiao"  style="margin-top: -3px"></Icon>
+                  <Icon custom="iconfont icon-liebiao"  ></Icon>
                 </Button>
                 <Button @click="mode = 'map'"  :type="mode=='map'?'primary':'default'"  >
-                  <Icon custom="iconfont icon-ditu1"  style="margin-top: -3px"></Icon>
+                  <Icon custom="iconfont icon-ditu1"></Icon>
                 </Button>
-              </ButtonGroup>
+              </IButtonGroup>
             </f-filter>
           </div>
           <div slot="body" slot-scope="props">
@@ -56,6 +56,7 @@ export default {
         {
           title: "站点名称",
           key: "name",
+          width: 160,
           render: (h, { row }) => {
             return h("a", row.name);
           }
@@ -63,6 +64,7 @@ export default {
         {
           title: "上传时间",
           key: "time",
+          width: 140,
           render(h, { row }) {
             return h("div", {}, Vue.filter("up-time")(row.time));
           }
@@ -70,6 +72,7 @@ export default {
         {
           title: "瞬时流量（T/h）",
           key: "SSLL",
+          width: 140,
           render(h, { row }) {
             const sensor = row.sensors.find(s => s.unit == "SSLL");
             return h(
@@ -82,6 +85,7 @@ export default {
         {
           title: "累计流量（T）",
           key: "SJLJ",
+          width: 140,
           render(h, { row }) {
             const sensor = row.sensors.find(s => s.unit == "SJLJ");
             return h(
@@ -94,6 +98,7 @@ export default {
         {
           title: "压力（MPa）",
           key: "YL",
+          width: 120,
           render(h, { row }) {
             const sensor = row.sensors.find(s => s.unit == "YL");
             return h(
@@ -106,6 +111,7 @@ export default {
         {
           title: "温度（℃）",
           key: "WD",
+          width: 120,
           render(h, { row }) {
             const sensor = row.sensors.find(s => s.unit == "WD");
             return h(
@@ -118,6 +124,7 @@ export default {
         {
           title: "卡内余额（元）",
           key: "KY",
+          width: 120,
           render(h, { row }) {
             const sensor = row.sensors.find(s => s.unit == "KY");
             return h(
@@ -130,6 +137,7 @@ export default {
         {
           title: "阀门",
           key: "fm",
+          minWidth: 120,
           render(h, { row }) {
             const v1 = row.sensors.find(s => s.name == "阀门开到位");
             const v2 = row.sensors.find(s => s.name == "阀门关到位");
@@ -140,6 +148,7 @@ export default {
           title: "操作",
           width: 120,
           align: "center",
+          fixed: "right",
           render: (h, { row }) => {
             return h("div", {}, [
               // h("Icon", {

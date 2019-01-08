@@ -29,11 +29,8 @@
                         <Input v-model="model.remark" type="textarea" :placeholder="'请输入'+ dictModel.remark"  />
                     </FormItem>
                 </div>
-                <!--<Button slot="buttons" style="margin-left: 10px" @click="onAddChild"  icon="md-add"  :disabled="!selectData">添加字典</Button>-->
             </x-wrapper>
-
-            <dict-item slot="bottom" ref="dictItem"></dict-item>
-
+            <dict-item slot="bottom" ref="dictItem" :pid="pid"></dict-item>
         </two-v>
 
     </div>
@@ -53,11 +50,12 @@ export default {
     return {
       split: 0.5,
       dictModel,
-      selectData: null,
+      pid: null,
       columns: [
         {
-          width: 60,
-          type: "selection"
+          width: 40,
+          type: "selection",
+          align: "center"
         },
         {
           title: dictModel.id,
@@ -166,14 +164,14 @@ export default {
   methods: {
     onRowClick(row) {
       this.$refs["dictItem"].setParent(row);
-      this.selectData = row;
+      this.pid = row.id;
     },
     onAddChild() {
       this.$refs["dictItem"].onAdd();
     },
     onRefresh() {
       this.$refs["dictItem"].reset();
-      this.selectData = null;
+      this.pid = null;
     }
   }
 };

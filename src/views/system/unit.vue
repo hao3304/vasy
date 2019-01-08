@@ -1,5 +1,4 @@
 <template>
-    <div class="page-user">
         <x-wrapper
                 title="数据类型"
                 service="unit"
@@ -8,7 +7,6 @@
                 :rules="rules"
                 :filter="filter"
                 ref="wrapper"
-                :height="windowHeight - 250"
                 :loads="true"
         >
             <div slot="dialog" slot-scope="{ model }">
@@ -46,7 +44,6 @@
                 </FormItem>
             </div>
         </x-wrapper>
-    </div>
 </template>
 <script>
 import types from "@/types";

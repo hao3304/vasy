@@ -51,6 +51,7 @@ export default {
 <style lang="less">
 .f-panel-h {
   height: 100%;
+  width: 100%;
   background-color: #fff;
   .ivu-split-trigger-bar-con.vertical {
     display: none;

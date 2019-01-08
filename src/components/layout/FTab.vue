@@ -1,11 +1,11 @@
 <template>
     <div class="f-tab">
-        <Tabs ref="tabs" @tabClose="onTabClose" @tabSelect="onTabSelect"  :scrollable="true"  :style="{height: windowHeight - 79 + 'px'}">
+        <Tabs ref="tabs" style="width: 100%;" @tabClose="onTabClose" @tabSelect="onTabSelect"  :scrollable="true" :style="{height: windowHeight - 79 + 'px'}">
             <TabPanel  title="首页" iconCls="fa fa-home">
                 <iframe :src="getPath('Monitor')" style="width: 100%;" :style="{height: windowHeight - 116 + 'px'}" frameborder="0"></iframe>
             </TabPanel>
             <TabPanel v-for="(tab, index) in tabs" :closable="true" :target="tab" :title="tab.text" :key="index" iconCls="fa fa-file-text-o">
-                <iframe :src="getPath(tab.path)" style="width: 100%;" :style="{height: windowHeight - 116 + 'px'}" frameborder="0"></iframe>
+                <iframe :src="getSrc(tab.path)" style="width: 100%;" :style="{height: windowHeight - 116 + 'px'}" frameborder="0"></iframe>
             </TabPanel>
         </Tabs>
     </div>
@@ -31,7 +31,10 @@ export default {
     ...mapMutations("app", ["remove_tab", "set_tab_index"]),
     getPath(path) {
       const route = routes.find(route => route.name == path);
-      return window.location.origin + "#" + route.path;
+      return window.location.origin + "#" + (route ? route.path : "/404");
+    },
+    getSrc(path) {
+      return window.location.origin + "#" + path;
     },
     onTabClose(tab) {
       this.remove_tab(tab.$attrs.target);

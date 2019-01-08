@@ -11,6 +11,7 @@ query GetTickets(
   $limit: Int!
   $count: Boolean!
   $status: String
+  $own: Boolean
 ) {
   tickets(
     input: {
@@ -26,6 +27,7 @@ query GetTickets(
       page: $page
       limit: $limit
       count: $count
+      own: $own
     }
   ) {
     size
@@ -142,6 +144,8 @@ query GetTicket($id: String!) {
         name
         fields {
           id
+          ftype
+          name
         }
       }
 
@@ -149,16 +153,18 @@ query GetTicket($id: String!) {
         id
         value
         field
+        track
         track_field {
           name
+          ftype
         }
       }
     }
   }
 }
 
-query TicketStat {
-  ticket_stat {
+query TicketStat($own: Boolean) {
+  ticket_stat(own: $own) {
     status {
       working
       pending
@@ -199,6 +205,28 @@ mutation TicketStateUpdate(
   }
 }
 
+mutation TicketStateCreate(
+  $type: String
+  $name: String!
+  $mode: Int!
+  $uid: String
+  $weight: Int!
+  $roles: [String!]
+) {
+  ticket_state_create(
+    input: {
+      type: $type
+      name: $name
+      mode: $mode
+      uid: $uid
+      weight: $weight
+      roles: $roles
+    }
+  ) {
+    id
+  }
+}
+
 mutation TicketCreate(
   $otype: String!
   $oid: String!
@@ -209,6 +237,7 @@ mutation TicketCreate(
   $address: String
   $position: String
   $live: Int
+  $assignee: String
 ) {
   ticket_create(
     input: {
@@ -221,6 +250,7 @@ mutation TicketCreate(
       address: $address
       position: $position
       live: $live
+      assignee: $assignee
     }
   ) {
     id
@@ -244,5 +274,14 @@ mutation TicketAction(
     }
   ) {
     track
+  }
+}
+
+subscription TicketAssign($token: String!) {
+  ticket_action(token: $token) {
+    id
+    sn
+    type
+    address
   }
 }

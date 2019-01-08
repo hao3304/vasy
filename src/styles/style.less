@@ -15,6 +15,23 @@
   background: #f9f9f9;
 }
 
+.f-column {
+  border-bottom: 0 !important;
+}
+
+.f-tabs {
+  .tabs-panels {
+    border: none;
+  }
+  .panel-body {
+    display: flex;
+    flex-direction: column;
+    .f-panel {
+      flex: 1;
+    }
+  }
+}
+
 .f-table {
   border-left: none !important;
   border-right: none !important;
@@ -22,10 +39,21 @@
   .ivu-table {
     color: #000;
     font-size: 14px;
+
+    .ivu-table-tip {
+      td {
+        border-bottom: 0;
+      }
+    }
+
     .ivu-table-row {
       td:last-child {
         border-right: none;
       }
+    }
+
+    &:before {
+      height: 0 !important;
     }
 
     th {
@@ -43,8 +71,8 @@
   .ivu-table-border td,
   .ivu-table-border th {
     border-width: 0 1px 1px 0;
-    border-style: dotted;
-    border-color: #ccc;
+    border-style: solid;
+    border-color: #ddd;
   }
   .ivu-table-small td {
     height: 32px;
